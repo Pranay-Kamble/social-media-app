@@ -1,0 +1,43 @@
+<!-- views/signup.ejs -->
+<% layout('newWeb/users/layout')%>
+
+    <div class="jumbotron col-sm-4 pull-center">
+        <h3>Sign Up</h3>
+        <form autocomplete="off" action="/users/signup" class="needs-validation" method="POST" novalidate>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input class="form-control" type="text" id="username" name="username" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="userid">UserID:</label>
+            <input class="form-control" type="text" id="userid" name="userid" minlength="3" maxlength="23" required/>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input class="form-control" type="password" id="password" name="password" minlength="8" maxlength="20" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmpassword">Confirm Password:</label>
+            <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" minlength="8" maxlength="20" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio: </label>
+            <input class="form-control" type="text" id="bio" name="bio" />
+        </div>
+            <br>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Sign Up" />
+        </div>
+        </form>
+    </div>
+        <a href="/users/signin">Already have an account? Sign In</a>
+

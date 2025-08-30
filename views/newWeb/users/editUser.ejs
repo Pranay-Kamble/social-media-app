@@ -1,0 +1,28 @@
+<% layout('newWeb/users/layout') %>
+
+<h2>Edit User Details</h2>
+<div class="jumbotron col-sm-4 pull-center">
+    <p>User ID: <%- userData._id%></p>
+    <form action="<%=`/users/${userData._id}?_method=PUT`%>" class="needs-validation" method="post" novalidate>
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input class="form-control" type="text" id="username" name="username" value="<%- userData.username %>" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input class="form-control" value="<%- userData.email %>" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio: </label>
+            <input class="form-control" type="text" id="bio" name="bio" value="<%- userData.bio %>"/>
+        </div>
+        <br>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Update" />
+        </div>
+    </form>
+    <a href="/users">Go Back</a>
+</div>

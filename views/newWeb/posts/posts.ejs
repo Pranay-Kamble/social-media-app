@@ -1,0 +1,10 @@
+<!--to render all posts in the main page-->
+<% layout('/newWeb/posts/layout.ejs') %>
+
+<section class="m-3">
+    <% for (const post of postData){ %>
+        <%- include('../partials/posts/shortPostCard',{post}) %>
+        <br>
+    <% }%>
+</section>
+

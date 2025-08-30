@@ -1,0 +1,19 @@
+<% layout('newWeb/users/layout') %>
+
+<body>
+    <title>User Profile</title>
+    <h1>User Profile</h1>
+    <div>
+        <p> UserName: <%- userData.username %></p>
+        <p> Email: <%- userData.email %></p>
+        <p> RegisteredOn: <%- userData.registeredOn %></p>
+        <p> Bio: <%- userData.bio %></p>
+
+        <a href="<%=`/users/${userData._id}/edit`%>">Edit Details</a> <br>
+        <a href="/users">Go Back</a>
+
+        <form action="/users/<%=`${userData._id}`%>?_method=DELETE" method="post">
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+</body>

@@ -1,0 +1,7 @@
+<% layout('newWeb/layout.ejs') %>
+
+<div class="alert alert-danger w-50" role="alert">
+    <h4 class="alert-heading"><%= err.status + ' - ' + err.message %> </h4>
+    <%= err.stack %>
+    <hr>
+</div>

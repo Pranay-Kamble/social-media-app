@@ -1,0 +1,19 @@
+<% layout('newWeb/users/layout') %>
+
+<body>
+    <h1>All Users</h1>
+    <a href="/">Back to Home</a><br>
+    <a href="/users/signup">Signup</a>
+    <div class="allUsers">
+        <% for (const user of userData) { %>
+            <div class="user-element">
+                <hr>
+                <p>ID: <a href="<%=`/users/${user._id}`%>"> <%=user._id%> </a></p>
+                <p>Name: <%=user.username%></p>
+                <p>Email: <%=user.email%></p>
+                <p>Bio: <%=user.bio%></p>
+            </div>
+        <% } %>
+        <hr>
+    </div>
+</body>

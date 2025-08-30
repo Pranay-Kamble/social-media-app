@@ -1,0 +1,21 @@
+<!-- will be used as a partial component in each post view i think-->
+
+<section class="comment-card-section">
+    <div class="card">
+        <div class="card-body m-0 p-2" >
+            <p >
+                <%= comment.content %>
+            </p>
+            <figcaption class="blockquote-footer">
+                <%= comment.authorId %>
+            </figcaption>
+            <p>+: <%=comment.upvotes %>  -:<%= comment.downvotes %> </p>
+            <form class="d-inline-block" action="<%=`/comments/${comment._id}/delete?_method=DELETE`%>" method="POST">
+                <button type='submit' class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            <button class="btn btn-sm btn-info">Edit</button>
+            <p>Edit to be implemented</p>
+        </div>
+    </div>
+
+</section>

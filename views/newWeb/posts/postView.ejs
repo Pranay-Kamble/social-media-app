@@ -1,0 +1,46 @@
+<!--For each individual post view-->
+<% layout('/newWeb/layout.ejs')%>
+<!--there can be a problem in the above line -> then try changing to /posts/layout-->
+
+<a href="/posts">Go Back</a>
+<section class="m-3">
+
+    <div class="post-view">
+        <h3><%= post.title %></h3>
+        <%= post.content %>
+    </div>
+    <br>
+    <button class="btn btn-sm btn-info"><a href="<%=`/posts/${post._id}/edit`%>">Edit</a></button>
+    <form class="d-inline-block" action="<%=`/posts/${post._id}/delete?_method=DELETE`%>" method="POST">
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+<!--    Then load the comments-->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col">
+                <h4>Comments</h4>
+                <div class="comment-view">
+                    <% for (const comment of postComments) {%>
+                        <%- include('../partials/comments/commentCard.ejs', { comment }) %>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <h4>Leave a comment</h4>
+                <form action="/comments/posts/<%=post._id%>" method="POST" class="needs-validation" novalidate>
+                    <textarea class="form-control" required name="content" id="comment" cols="30" rows="5" placeholder="Add a comment"></textarea>
+                    <br>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-info">Add Comment</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</section>
