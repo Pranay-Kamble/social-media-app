@@ -8,8 +8,9 @@ import methodOverride from 'method-override'
 import { fileURLToPath } from 'url';
 import morgan from 'morgan';
 import ejsMate from 'ejs-mate'
-import AppError from "./utils/AppError.js";
-import session from "express-session";
+import AppError from './utils/AppError.js';
+import session from 'express-session';
+import flash from 'connect-flash'
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -25,8 +26,12 @@ const app = express();
 const sessionConfig = {
     secret : 'thisshouldbeabettersecretkey',
     resave: false,
-    saveUninitialized: true
-    // store: mongoose.connection -> by default session are stored in main memory which is lost on restart, so we try to store on mongodb
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //expires in 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }    // store: mongoose.connection -> by default session are stored in main memory which is lost on restart, so we try to store on mongodb
 }
 
 app.engine('ejs', ejsMate);
@@ -35,6 +40,14 @@ app.set('views', path.join(path.dirname(__filename), 'views'));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 app.get('/', (req,res) => {
     res.render('newWeb/home');

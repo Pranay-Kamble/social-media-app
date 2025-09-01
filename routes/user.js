@@ -4,7 +4,7 @@ import methodOverride from 'method-override'
 import AppError from "../utils/AppError.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js"
 import joi from 'joi'
-
+import bcrypt from 'bcrypt'
 
 const userRoutes = express.Router();
 userRoutes.use(methodOverride('_method'));
@@ -49,13 +49,17 @@ const validateNewUser = async (req, res, next) => {
     }
 }
 
+const hashPassword = async (plainText) =>  {
+    return await bcrypt.hash(plainText, 12);
+}
+
 userRoutes.get('/', asyncErrorHandler(async (req, res) => {
     const userData = await User.find({});
     res.render('newWeb/users/userHome.ejs', {userData})
 }))
 
 userRoutes.get('/signup',(req, res) => {
-    res.render('newWeb/users/signup.ejs')
+    res.render('newWeb/users/signup.ejs' , {obj:{}})
 })
 
 userRoutes.get('/signin',(req, res) => {
@@ -87,6 +91,7 @@ userRoutes.put('/:id', validateUserEdit, asyncErrorHandler(async (req, res) => {
     const id = req.params.id;
     const newUserData = formData;
     await User.updateOne({_id: id}, {$set: {username: newUserData.username, email: newUserData.email, bio: newUserData.bio}});
+    req.flash('success', 'User profile updated successfully')
     res.redirect('/users/'+id);
 }))
 
@@ -98,32 +103,44 @@ userRoutes.post('/signup', validateNewUser, asyncErrorHandler(async (req, res) =
             {email: formData.email},
             {userid: formData.userid}
         ]
-    })
+    });
 
-    if (userSearch && userSearch.email) {
-        console.log("Email already exists");
-        throw new AppError('Email already used', 400);
+    //**************** Move these check to client side somehow **********************
+    if (userSearch) {
+        if (userSearch.email) {
+            req.flash('error', 'Email already exists!');
+            res.render('newWeb/users/signup.ejs', {obj: formData});
+            return;
+        }
+        if (userSearch.userid) {
+            req.flash('error', 'UserID already in use!');
+            res.render('newWeb/users/signup.ejs', {obj: formData});
+            return;
+        }
+        if (formData.password !== formData.confirmpassword) {
+            req.flash('error', 'Passwords do not match!');
+            res.render('newWeb/users/signup.ejs', {obj: formData});
+            return;
+        }
     }
-    if (userSearch && userSearch.userid) {
-        console.log("UserID already exists");
-        throw new AppError('UserID already exists', 400);
-    }
-    if (formData.password !== formData.confirmpassword) {
-        throw new AppError('Passwords do not match', 400);
-    }
+    //*************** Move these check to client side somehow **********************
+
+    formData.password = await hashPassword(formData.password);
 
     const newUser = new User({...formData});
     await newUser.save();
     console.log(newUser);
+    req.flash('success', 'Created new user');
     res.redirect(`/users/${newUser._id}`);
 }))
 
 userRoutes.delete('/:id', asyncErrorHandler(async (req, res) => {
     const id = req.params.id;
     await User.deleteOne({_id: id});
+    req.flash('success', 'Deleted user!')
     res.redirect('/users/');
 
-    //also implement mongo middleware to also delete all the comments that the user has made
+    //also implement mongo middleware to also delete all the comments that the user has made or keep the comments but make their username as deleted
 
 }))
 

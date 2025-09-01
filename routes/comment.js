@@ -23,6 +23,7 @@ commentRoutes.post('/posts/:postId', async (req, res) => {
         const newComment = await Comment.create({postId: postId, content: formData.content});
     }
     console.log("Hit on post route for comments")
+    req.flash('success', 'Comment added!')
     res.redirect(`../../posts/${postId}`);
 })
 
@@ -31,6 +32,7 @@ commentRoutes.delete('/:commentId/delete', async (req, res) => {
     const commentId = req.params.commentId
     const comment = await Comment.findByIdAndDelete(commentId);
     const postId = comment.postId;
+    req.flash('success', 'Deleted comment')
     res.redirect(`../../posts/${postId}`);
 })
 

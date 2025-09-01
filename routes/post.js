@@ -26,6 +26,11 @@ postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
     const postId = req.params.id;
 
     const post = await Post.findById({_id: postId});
+    if (!post) {
+        req.flash('error', 'Post not found');
+        res.redirect('/posts');
+        return;
+    }
     const postComments = await Comment.find({postId: postId});
 
     res.render('newWeb/posts/postView', { post, postComments })
@@ -34,7 +39,7 @@ postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
 postRoutes.post('/create', asyncErrorHandler(async (req, res) => {
 
     //Check if it is coming from a valid login session, else anyone can add a post through postman
-    //Proper middleware has to be implmented
+    //Proper middleware has to be implemented
 
     console.log("Received POST request");
     const formData = req.body;
@@ -65,6 +70,7 @@ postRoutes.post('/create', asyncErrorHandler(async (req, res) => {
     console.log(newPostObject);
 
     const id = newPostObject._id;
+    req.flash('success', 'Successfully created the post!')
     res.redirect(`/posts/${id}`);
 }))
 
@@ -96,6 +102,7 @@ postRoutes.put('/:id/edit',  asyncErrorHandler(async (req, res) => {
     }
 
     const updatedPost = await Post.findByIdAndUpdate({_id: postId}, {...formData, dateUpdated: new Date().toISOString()});
+    req.flash('success', 'Edit was successful')
     res.redirect(`/posts/${postId}`);
 }))
 
@@ -104,6 +111,7 @@ postRoutes.delete('/:id/delete', asyncErrorHandler(async (req, res) => {
 
     const postId = req.params.id;
     const post = await Post.findByIdAndDelete({_id: postId});
+    req.flash('success', 'Post deleted successfully')
     res.redirect(`/posts`);
 }))
 

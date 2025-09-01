@@ -1,11 +1,11 @@
 import { Schema, mongoose } from 'mongoose';
 
 const userSchema = new Schema({
-    username : {
+    username : { //Rendered only on the profile page of the user
         type: String,
         required : true
     },
-    userid : {
+    userid : { //this is used to display the user
         type: String,
         required: true,
         minLength: 3,
@@ -23,9 +23,7 @@ const userSchema = new Schema({
     },
     password : {
         type: String,
-        minLength: 8,
-        maxLength: 20,
-        required: true 
+        required: [true , 'Password cannot be blank'],
     },
     lastLogin : {
         type: Date
