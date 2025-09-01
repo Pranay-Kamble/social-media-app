@@ -3,20 +3,24 @@
 
     <div class="jumbotron col-sm-4 pull-center">
         <h3>Sign Up</h3>
+
+        <%- include('../partials/successFlash.ejs', { success }) %>
+        <%- include('../partials/errorFlash.ejs', { error }) %>
+
         <form autocomplete="off" action="/users/signup" class="needs-validation" method="POST" novalidate>
         <div class="form-group">
             <label for="username">Username:</label>
-            <input class="form-control" type="text" id="username" name="username" required/>
+            <input class="form-control" type="text" id="username" name="username" value="<%= (obj && obj.username) || ''%>" required/>
         </div>
 
         <div class="form-group">
             <label for="userid">UserID:</label>
-            <input class="form-control" type="text" id="userid" name="userid" minlength="3" maxlength="23" required/>
+            <input class="form-control" type="text" id="userid" name="userid" minlength="3" maxlength="23" value="<%= (obj && obj.userid) || ''%>" required/>
         </div>
         
         <div class="form-group">
             <label for="email">Email:</label>
-            <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" required/>
+            <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" value="<%= (obj && obj.email) || ''%>" required/>
         </div>
 
         <div class="form-group">
@@ -31,7 +35,7 @@
 
         <div class="form-group">
             <label for="bio">Bio: </label>
-            <input class="form-control" type="text" id="bio" name="bio" />
+            <input class="form-control" type="text" id="bio" name="bio" value="<%= (obj && obj.bio) || ''%>" />
         </div>
             <br>
         <div class="form-group">

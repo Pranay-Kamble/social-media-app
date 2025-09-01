@@ -1,6 +1,10 @@
 <% layout('newWeb/users/layout') %>
 
 <h2>Edit User Details</h2>
+
+<%- include('../partials/successFlash.ejs', { success }) %>
+<%- include('../partials/errorFlash.ejs', { error }) %>
+
 <div class="jumbotron col-sm-4 pull-center">
     <p>User ID: <%- userData._id%></p>
     <form action="<%=`/users/${userData._id}?_method=PUT`%>" class="needs-validation" method="post" novalidate>
