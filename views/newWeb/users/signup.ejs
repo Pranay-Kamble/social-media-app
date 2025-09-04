@@ -10,17 +10,17 @@
         <form autocomplete="off" action="/users/signup" class="needs-validation" method="POST" novalidate>
         <div class="form-group">
             <label for="username">Username:</label>
-            <input class="form-control" type="text" id="username" name="username" value="<%= (obj && obj.username) || ''%>" required/>
+            <input class="form-control" type="text" id="username" name="username" value="<%= (user && user.username) || ''%>" required/>
         </div>
 
         <div class="form-group">
             <label for="userid">UserID:</label>
-            <input class="form-control" type="text" id="userid" name="userid" minlength="3" maxlength="23" value="<%= (obj && obj.userid) || ''%>" required/>
+            <input class="form-control" type="text" id="userid" name="userid" minlength="3" maxlength="23" value="<%= (user && user.userid) || ''%>" required/>
         </div>
         
         <div class="form-group">
             <label for="email">Email:</label>
-            <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" value="<%= (obj && obj.email) || ''%>" required/>
+            <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" value="<%= (user && user.email) || ''%>" required/>
         </div>
 
         <div class="form-group">
@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <label for="bio">Bio: </label>
-            <input class="form-control" type="text" id="bio" name="bio" value="<%= (obj && obj.bio) || ''%>" />
+            <input class="form-control" type="text" id="bio" name="bio" value="<%= (user && user.bio) || ''%>" />
         </div>
             <br>
         <div class="form-group">

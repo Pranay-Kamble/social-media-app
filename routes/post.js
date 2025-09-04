@@ -36,7 +36,7 @@ postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
     res.render('newWeb/posts/postView', { post, postComments })
 }))
 
-postRoutes.post('/create', asyncErrorHandler(async (req, res) => {
+postRoutes.post('/create' ,asyncErrorHandler(async (req, res) => {
 
     //Check if it is coming from a valid login session, else anyone can add a post through postman
     //Proper middleware has to be implemented

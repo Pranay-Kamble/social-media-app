@@ -1,792 +1,870 @@
 import mongoose from 'mongoose'
-
-const userData = [
+import User from '../models/user.js'
+//
+// Generated userid values for each user
+const userUpdates = [
   {
-    username: "alice",
-    email: "alice@example.com",
-    phoneNumber: "9876543210",
-    registeredOn: new Date("2024-06-01"),
-    passwordHash: "alicepass",
-    lastLogin: new Date("2025-06-01"),
-    profilePicture: "https://randomuser.me/api/portraits/women/1.jpg",
-    bio: "Enthusiastic reader and tech lover."
+    username: 'charliebro',
+    userid: 'charlie_bro'
   },
   {
-    username: "bob",
-    email: "bob@example.com",
-    phoneNumber: "9123456780",
-    registeredOn: new Date("2024-07-15"),
-    passwordHash: "bobpass",
-    lastLogin: new Date("2025-05-20"),
-    profilePicture: "https://randomuser.me/api/portraits/men/2.jpg",
-    bio: "Aspiring developer. Coffee addict."
+    username: 'diana',
+    userid: 'diana_user'
   },
   {
-    username: "charlie",
-    email: "charlie@example.com",
-    phoneNumber: "9988776655",
-    registeredOn: new Date("2024-08-10"),
-    passwordHash: "charliepass",
-    lastLogin: new Date("2025-06-05"),
-    profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
-    bio: "I love open source and chess."
+    username: 'edward',
+    userid: 'edward_dev'
   },
   {
-    username: "diana",
-    email: "diana@example.com",
-    phoneNumber: "9090909090",
-    registeredOn: new Date("2024-09-12"),
-    passwordHash: "dianapass",
-    lastLogin: new Date("2025-06-07"),
-    profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
-    bio: "Nature photographer and blogger."
+    username: 'fiona',
+    userid: 'fiona_user'
   },
   {
-    username: "edward",
-    email: "edward@example.com",
-    phoneNumber: "9001122334",
-    registeredOn: new Date("2024-10-20"),
-    passwordHash: "edwardpass",
-    lastLogin: new Date("2025-05-30"),
-    profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
-    bio: "History buff. Bookworm."
+    username: 'george',
+    userid: 'george_g'
   },
   {
-    username: "fiona",
-    email: "fiona@example.com",
-    phoneNumber: "9112233445",
-    registeredOn: new Date("2024-11-05"),
-    passwordHash: "fionapass",
-    lastLogin: new Date("2025-06-03"),
-    profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
-    bio: "Music is my life."
+    username: 'hannah',
+    userid: 'hannah_h'
   },
   {
-    username: "george",
-    email: "george@example.com",
-    phoneNumber: "9223344556",
-    registeredOn: new Date("2024-12-18"),
-    passwordHash: "georgepass",
-    lastLogin: new Date("2025-06-06"),
-    profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
-    bio: "Gamer and tech enthusiast."
+    username: 'ian',
+    userid: 'ian_user'
   },
   {
-    username: "hannah",
-    email: "hannah@example.com",
-    phoneNumber: "9334455667",
-    registeredOn: new Date("2025-01-10"),
-    passwordHash: "hannahpass",
-    lastLogin: new Date("2025-06-02"),
-    profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
-    bio: "Fitness freak and foodie."
+    username: 'julia',
+    userid: 'julia_j'
   },
   {
-    username: "ian",
-    email: "ian@example.com",
-    phoneNumber: "9445566778",
-    registeredOn: new Date("2025-02-14"),
-    passwordHash: "ianpass",
-    lastLogin: new Date("2025-06-04"),
-    profilePicture: "https://randomuser.me/api/portraits/men/9.jpg",
-    bio: "Traveling the world, one city at a time."
+    username: 'karthik',
+    userid: 'karthik_dev'
   },
   {
-    username: "julia",
-    email: "julia@example.com",
-    phoneNumber: "9556677889",
-    registeredOn: new Date("2025-03-21"),
-    passwordHash: "juliapass",
-    lastLogin: new Date("2025-06-06"),
-    profilePicture: "https://randomuser.me/api/portraits/women/10.jpg",
-    bio: "Writer and poet."
+    username: 'lara',
+    userid: 'lara_user'
   },
   {
-    username: "karthik",
-    email: "karthik@example.com",
-    phoneNumber: "9667788990",
-    registeredOn: new Date("2025-04-02"),
-    passwordHash: "karthikpass",
-    lastLogin: new Date("2025-06-01"),
-    profilePicture: "https://randomuser.me/api/portraits/men/11.jpg",
-    bio: "Cricket fan. Code is poetry."
+    username: 'mike',
+    userid: 'mike_m'
   },
   {
-    username: "lara",
-    email: "lara@example.com",
-    phoneNumber: "9778899001",
-    registeredOn: new Date("2025-04-15"),
-    passwordHash: "larapass",
-    lastLogin: new Date("2025-06-05"),
-    profilePicture: "https://randomuser.me/api/portraits/women/12.jpg",
-    bio: "Art student and illustrator."
+    username: 'nina',
+    userid: 'nina_user'
   },
   {
-    username: "mike",
-    email: "mike@example.com",
-    phoneNumber: "9889900112",
-    registeredOn: new Date("2025-05-01"),
-    passwordHash: "mikepass",
-    lastLogin: new Date("2025-06-07"),
-    profilePicture: "https://randomuser.me/api/portraits/men/13.jpg",
-    bio: "Startup founder. Dream big."
+    username: 'omar',
+    userid: 'omar_o'
   },
   {
-    username: "nina",
-    email: "nina@example.com",
-    phoneNumber: "9991001122",
-    registeredOn: new Date("2025-05-15"),
-    passwordHash: "ninapass",
-    lastLogin: new Date("2025-06-08"),
-    profilePicture: "https://randomuser.me/api/portraits/women/14.jpg",
-    bio: "Yoga and meditation lover."
-  },
-  {
-    username: "omar",
-    email: "omar@example.com",
-    phoneNumber: "9002112233",
-    registeredOn: new Date("2025-06-01"),
-    passwordHash: "omarpass",
-    lastLogin: new Date("2025-06-08"),
-    profilePicture: "https://randomuser.me/api/portraits/men/15.jpg",
-    bio: "Always learning, always growing."
+    username: 'testing1',
+    userid: 'test_user1' // Updated from existing 'deletelater'
   }
 ];
+mongoose.connect("mongodb://localhost:27017/SocialMediaApplication").then(() => {
+  console.log("Connected!");
+}).catch(err => {
+  console.error("Could not connect: " + err);
+})
 
-const postData = [
-  {
-    title: "Exploring the Future of AI",
-    content: "This post explores the advancements and future possibilities in artificial intelligence.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
-    dateCreated: new Date("2024-11-19T06:04:27Z"),
-    dateUpdated: new Date("2024-12-04T06:04:27Z"),
-    mediaIncluded: [],
-    upvotes: 943,
-    downvotes: 355,
-    score: 588,
-    commentsCount: 42
-  },
-  {
-    title: "My Journey with Open Source",
-    content: "Sharing my experiences contributing to open source projects and how it helped my career.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
-    dateCreated: new Date("2024-06-26T06:04:48Z"),
-    dateUpdated: new Date("2024-07-23T06:04:48Z"),
-    mediaIncluded: [],
-    upvotes: 447,
-    downvotes: 453,
-    score: -6,
-    commentsCount: 90
-  },
-  {
-    title: "Top 10 JavaScript Frameworks in 2025",
-    content: "An overview of the most popular JavaScript frameworks and their features in 2025.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
-    dateCreated: new Date("2024-06-12T15:06:02Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 555,
-    downvotes: 165,
-    score: 390,
-    commentsCount: 20
-  },
-  {
-    title: "How to Build a Social Media App",
-    content: "Step-by-step guide on building a social media application from scratch.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
-    dateCreated: new Date("2024-07-11T21:18:58Z"),
-    dateUpdated: new Date("2024-07-13T21:18:58Z"),
-    mediaIncluded: [],
-    upvotes: 305,
-    downvotes: 200,
-    score: 105,
-    commentsCount: 51
-  },
-  {
-    title: "Understanding Async/Await in Node.js",
-    content: "Explaining the async/await syntax and how it simplifies asynchronous programming in Node.js.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
-    dateCreated: new Date("2024-07-07T13:03:41Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 771,
-    downvotes: 459,
-    score: 312,
-    commentsCount: 54
-  },
-  {
-    title: "Why I Love Functional Programming",
-    content: "Why functional programming paradigms are gaining popularity among developers.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
-    dateCreated: new Date("2024-09-21T09:13:49Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 654,
-    downvotes: 57,
-    score: 597,
-    commentsCount: 52
-  },
-  {
-    title: "Tips for Effective Remote Work",
-    content: "Tips and tricks to stay productive while working remotely.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
-    dateCreated: new Date("2024-12-27T01:21:12Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 372,
-    downvotes: 253,
-    score: 119,
-    commentsCount: 40
-  },
-  {
-    title: "The Rise of Quantum Computing",
-    content: "An introduction to quantum computing and its potential impact on technology.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
-    dateCreated: new Date("2025-02-01T08:03:29Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 621,
-    downvotes: 278,
-    score: 343,
-    commentsCount: 26
-  },
-  {
-    title: "Best Practices for MongoDB Schema Design",
-    content: "Best practices to design efficient and scalable MongoDB schemas.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
-    dateCreated: new Date("2024-11-15T01:05:06Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 723,
-    downvotes: 50,
-    score: 673,
-    commentsCount: 18
-  },
-  {
-    title: "How to Secure Your Web Application",
-    content: "Security measures every web developer should implement to protect their applications.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
-    dateCreated: new Date("2024-10-25T12:30:50Z"),
-    dateUpdated: new Date("2024-11-15T12:30:50Z"),
-    mediaIncluded: [],
-    upvotes: 445,
-    downvotes: 408,
-    score: 37,
-    commentsCount: 95
-  },
-  {
-    title: "React vs Vue: A Developer's Perspective",
-    content: "A comparison between React and Vue frameworks from a developer's point of view.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
-    dateCreated: new Date("2025-04-13T08:07:35Z"),
-    dateUpdated: new Date("2025-05-11T08:07:35Z"),
-    mediaIncluded: [],
-    upvotes: 637,
-    downvotes: 152,
-    score: 485,
-    commentsCount: 94
-  },
-  {
-    title: "Getting Started with Docker",
-    content: "Getting started with containerization using Docker for development and deployment.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a2'),
-    dateCreated: new Date("2024-08-17T13:12:51Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 17,
-    downvotes: 63,
-    score: -46,
-    commentsCount: 47
-  },
-  {
-    title: "The Importance of Code Reviews",
-    content: "The benefits of code reviews and how to conduct them effectively.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
-    dateCreated: new Date("2024-10-08T15:53:24Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 565,
-    downvotes: 74,
-    score: 491,
-    commentsCount: 0
-  },
-  {
-    title: "Building Scalable APIs with Express",
-    content: "How to build scalable and maintainable APIs using Express.js.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b6'),
-    dateCreated: new Date("2025-03-27T15:40:41Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 689,
-    downvotes: 451,
-    score: 238,
-    commentsCount: 30
-  },
-  {
-    title: "CSS Grid vs Flexbox: When to Use Which",
-    content: "Understanding when to use CSS Grid and Flexbox for layout design.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
-    dateCreated: new Date("2024-09-12T16:06:30Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 307,
-    downvotes: 244,
-    score: 63,
-    commentsCount: 55
-  },
-  {
-    title: "Introduction to TypeScript",
-    content: "An introduction to TypeScript and its advantages over plain JavaScript.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ae'),
-    dateCreated: new Date("2025-01-20T06:48:27Z"),
-    dateUpdated: new Date("2025-02-06T06:48:27Z"),
-    mediaIncluded: [],
-    upvotes: 581,
-    downvotes: 108,
-    score: 473,
-    commentsCount: 34
-  },
-  {
-    title: "Debugging Tips for JavaScript Developers",
-    content: "Effective debugging techniques for JavaScript applications.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
-    dateCreated: new Date("2024-09-20T12:33:52Z"),
-    dateUpdated: new Date("2024-09-30T12:33:52Z"),
-    mediaIncluded: [],
-    upvotes: 535,
-    downvotes: 238,
-    score: 297,
-    commentsCount: 65
-  },
-  {
-    title: "How to Contribute to Open Source",
-    content: "How to find and contribute to open source projects.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
-    dateCreated: new Date("2024-12-11T22:40:17Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 221,
-    downvotes: 87,
-    score: 134,
-    commentsCount: 99
-  },
-  {
-    title: "Understanding RESTful APIs",
-    content: "Understanding the principles of RESTful API design.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
-    dateCreated: new Date("2025-04-23T01:51:02Z"),
-    dateUpdated: new Date("2025-05-22T01:51:02Z"),
-    mediaIncluded: [],
-    upvotes: 627,
-    downvotes: 139,
-    score: 488,
-    commentsCount: 23
-  },
-  {
-    title: "Deploying Node.js Apps to the Cloud",
-    content: "Guide to deploying Node.js applications on cloud platforms.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
-    dateCreated: new Date("2024-08-16T10:48:10Z"),
-    dateUpdated: new Date("2024-08-22T10:48:10Z"),
-    mediaIncluded: [],
-    upvotes: 931,
-    downvotes: 308,
-    score: 623,
-    commentsCount: 62
-  },
-  {
-    title: "The Art of Writing Clean Code",
-    content: "Tips for writing clean, readable, and maintainable code.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
-    dateCreated: new Date("2024-12-27T08:15:07Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 242,
-    downvotes: 426,
-    score: -184,
-    commentsCount: 43
-  },
-  {
-    title: "Why Testing Matters",
-    content: "The importance of testing and different testing strategies.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
-    dateCreated: new Date("2024-06-24T07:35:24Z"),
-    dateUpdated: new Date("2024-06-26T07:35:24Z"),
-    mediaIncluded: [],
-    upvotes: 360,
-    downvotes: 71,
-    score: 289,
-    commentsCount: 50
-  },
-  {
-    title: "GraphQL vs REST: Pros and Cons",
-    content: "Comparing GraphQL and REST APIs: benefits and drawbacks.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
-    dateCreated: new Date("2025-04-23T23:19:29Z"),
-    dateUpdated: new Date("2025-05-19T23:19:29Z"),
-    mediaIncluded: [],
-    upvotes: 16,
-    downvotes: 384,
-    score: -368,
-    commentsCount: 75
-  },
-  {
-    title: "Building Real-time Apps with WebSockets",
-    content: "Building real-time applications using WebSockets technology.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
-    dateCreated: new Date("2024-09-13T00:38:01Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 642,
-    downvotes: 143,
-    score: 499,
-    commentsCount: 75
-  },
-  {
-    title: "A Guide to Progressive Web Apps",
-    content: "What makes Progressive Web Apps a game changer in web development.",
-    creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
-    dateCreated: new Date("2024-08-05T18:21:21Z"),
-    dateUpdated: null,
-    mediaIncluded: [],
-    upvotes: 666,
-    downvotes: 415,
-    score: 251,
-    commentsCount: 8
+// MongoDB update operations
+const updateOperations = userUpdates.map(user => ({
+  updateOne: {
+    filter: { username: user.username },
+    update: { $set: { userid: user.userid } }
   }
-];
+}));
 
-const commentData = [
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a322'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
-    content: "Great post! I learned a lot from this.",
-    createdAt: new Date("2025-05-01T09:10:00Z"),
-    updatedAt: null,
-    upvotes: 12,
-    downvotes: 0,
-    score: 12,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a323'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
-    content: "Can you provide more examples?",
-    createdAt: new Date("2025-05-02T10:05:00Z"),
-    updatedAt: null,
-    upvotes: 8,
-    downvotes: 2,
-    score: 6,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a324'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a2'),
-    content: "I disagree with your point on scalability.",
-    createdAt: new Date("2025-05-03T11:00:00Z"),
-    updatedAt: null,
-    upvotes: 2,
-    downvotes: 7,
-    score: -5,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a325'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
-    content: "Thanks for sharing this resource!",
-    createdAt: new Date("2025-05-04T12:30:00Z"),
-    updatedAt: null,
-    upvotes: 15,
-    downvotes: 0,
-    score: 15,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a326'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a6'),
-    content: "How does this compare to other frameworks?",
-    createdAt: new Date("2025-05-05T13:00:00Z"),
-    updatedAt: null,
-    upvotes: 5,
-    downvotes: 1,
-    score: 4,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a327'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
-    content: "Very insightful, thanks!",
-    createdAt: new Date("2025-05-06T14:15:00Z"),
-    updatedAt: null,
-    upvotes: 10,
-    downvotes: 0,
-    score: 10,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a328'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
-    content: "Could you elaborate on the last section?",
-    createdAt: new Date("2025-05-07T15:00:00Z"),
-    updatedAt: null,
-    upvotes: 4,
-    downvotes: 1,
-    score: 3,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a329'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
-    content: "I tried this and it worked perfectly.",
-    createdAt: new Date("2025-05-08T16:30:00Z"),
-    updatedAt: null,
-    upvotes: 9,
-    downvotes: 0,
-    score: 9,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32a'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ae'),
-    content: "What are the limitations of this approach?",
-    createdAt: new Date("2025-05-09T17:00:00Z"),
-    updatedAt: null,
-    upvotes: 3,
-    downvotes: 2,
-    score: 1,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32b'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
-    content: "Loved the explanation!",
-    createdAt: new Date("2025-05-10T18:00:00Z"),
-    updatedAt: null,
-    upvotes: 11,
-    downvotes: 1,
-    score: 10,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32c'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b2'),
-    content: "This is a game changer.",
-    createdAt: new Date("2025-05-11T19:00:00Z"),
-    updatedAt: null,
-    upvotes: 13,
-    downvotes: 0,
-    score: 13,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32d'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b4'),
-    content: "Can you link to the documentation?",
-    createdAt: new Date("2025-05-12T20:00:00Z"),
-    updatedAt: null,
-    upvotes: 2,
-    downvotes: 0,
-    score: 2,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32e'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b6'),
-    content: "I would love to see more posts like this.",
-    createdAt: new Date("2025-05-13T21:00:00Z"),
-    updatedAt: null,
-    upvotes: 7,
-    downvotes: 0,
-    score: 7,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32f'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b8'),
-    content: "This didn't work for me, any tips?",
-    createdAt: new Date("2025-05-14T22:00:00Z"),
-    updatedAt: null,
-    upvotes: 1,
-    downvotes: 3,
-    score: -2,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a330'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
-    content: "Fantastic write-up!",
-    createdAt: new Date("2025-05-15T23:00:00Z"),
-    updatedAt: null,
-    upvotes: 14,
-    downvotes: 0,
-    score: 14,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a331'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
-    content: "What about edge cases?",
-    createdAt: new Date("2025-05-16T09:00:00Z"),
-    updatedAt: null,
-    upvotes: 4,
-    downvotes: 2,
-    score: 2,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a332'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a2'),
-    content: "Thanks for the detailed explanation.",
-    createdAt: new Date("2025-05-17T10:00:00Z"),
-    updatedAt: null,
-    upvotes: 8,
-    downvotes: 0,
-    score: 8,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a333'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
-    content: "How would you handle errors in this case?",
-    createdAt: new Date("2025-05-18T11:00:00Z"),
-    updatedAt: null,
-    upvotes: 3,
-    downvotes: 1,
-    score: 2,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a334'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a6'),
-    content: "I appreciate the code samples.",
-    createdAt: new Date("2025-05-19T12:00:00Z"),
-    updatedAt: null,
-    upvotes: 6,
-    downvotes: 0,
-    score: 6,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a335'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
-    content: "Could you write about advanced topics next?",
-    createdAt: new Date("2025-05-20T13:00:00Z"),
-    updatedAt: null,
-    upvotes: 5,
-    downvotes: 0,
-    score: 5,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a322'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
-    content: "This is so helpful, thank you!",
-    createdAt: new Date("2025-05-21T14:00:00Z"),
-    updatedAt: null,
-    upvotes: 9,
-    downvotes: 0,
-    score: 9,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a323'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
-    content: "I recommend this to all my friends.",
-    createdAt: new Date("2025-05-22T15:00:00Z"),
-    updatedAt: null,
-    upvotes: 11,
-    downvotes: 1,
-    score: 10,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a324'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ae'),
-    content: "Can you make a video tutorial on this?",
-    createdAt: new Date("2025-05-23T16:00:00Z"),
-    updatedAt: null,
-    upvotes: 6,
-    downvotes: 0,
-    score: 6,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a325'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
-    content: "Looking forward to your next post!",
-    createdAt: new Date("2025-05-24T17:00:00Z"),
-    updatedAt: null,
-    upvotes: 8,
-    downvotes: 0,
-    score: 8,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a326'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b2'),
-    content: "Super clear and concise.",
-    createdAt: new Date("2025-05-25T18:00:00Z"),
-    updatedAt: null,
-    upvotes: 7,
-    downvotes: 1,
-    score: 6,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a327'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b4'),
-    content: "I have a question about step 3.",
-    createdAt: new Date("2025-05-26T19:00:00Z"),
-    updatedAt: null,
-    upvotes: 2,
-    downvotes: 0,
-    score: 2,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a328'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b6'),
-    content: "This is a must-read for beginners.",
-    createdAt: new Date("2025-05-27T20:00:00Z"),
-    updatedAt: null,
-    upvotes: 10,
-    downvotes: 0,
-    score: 10,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a329'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b8'),
-    content: "I encountered an error, can you help?",
-    createdAt: new Date("2025-05-28T21:00:00Z"),
-    updatedAt: null,
-    upvotes: 1,
-    downvotes: 2,
-    score: -1,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32a'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
-    content: "This is gold, thanks!",
-    createdAt: new Date("2025-05-29T22:00:00Z"),
-    updatedAt: null,
-    upvotes: 12,
-    downvotes: 0,
-    score: 12,
-    isDeleted: false
-  },
-  {
-    postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32b'),
-    authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
-    content: "How would you optimize this?",
-    createdAt: new Date("2025-05-30T23:00:00Z"),
-    updatedAt: null,
-    upvotes: 3,
-    downvotes: 1,
-    score: 2,
-    isDeleted: false
-  }
-];
+await User.bulkWrite(updateOperations);
+console.log(updateOperations);
 
-export {postData, userData, commentData};
+
+// const userData = [
+//   {
+//     username: "alice",
+//     email: "alice@example.com",
+//     phoneNumber: "9876543210",
+//     registeredOn: new Date("2024-06-01"),
+//     passwordHash: "alicepass",
+//     lastLogin: new Date("2025-06-01"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/1.jpg",
+//     bio: "Enthusiastic reader and tech lover."
+//   },
+//   {
+//     username: "bob",
+//     email: "bob@example.com",
+//     phoneNumber: "9123456780",
+//     registeredOn: new Date("2024-07-15"),
+//     passwordHash: "bobpass",
+//     lastLogin: new Date("2025-05-20"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/2.jpg",
+//     bio: "Aspiring developer. Coffee addict."
+//   },
+//   {
+//     username: "charlie",
+//     email: "charlie@example.com",
+//     phoneNumber: "9988776655",
+//     registeredOn: new Date("2024-08-10"),
+//     passwordHash: "charliepass",
+//     lastLogin: new Date("2025-06-05"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
+//     bio: "I love open source and chess."
+//   },
+//   {
+//     username: "diana",
+//     email: "diana@example.com",
+//     phoneNumber: "9090909090",
+//     registeredOn: new Date("2024-09-12"),
+//     passwordHash: "dianapass",
+//     lastLogin: new Date("2025-06-07"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
+//     bio: "Nature photographer and blogger."
+//   },
+//   {
+//     username: "edward",
+//     email: "edward@example.com",
+//     phoneNumber: "9001122334",
+//     registeredOn: new Date("2024-10-20"),
+//     passwordHash: "edwardpass",
+//     lastLogin: new Date("2025-05-30"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/5.jpg",
+//     bio: "History buff. Bookworm."
+//   },
+//   {
+//     username: "fiona",
+//     email: "fiona@example.com",
+//     phoneNumber: "9112233445",
+//     registeredOn: new Date("2024-11-05"),
+//     passwordHash: "fionapass",
+//     lastLogin: new Date("2025-06-03"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/6.jpg",
+//     bio: "Music is my life."
+//   },
+//   {
+//     username: "george",
+//     email: "george@example.com",
+//     phoneNumber: "9223344556",
+//     registeredOn: new Date("2024-12-18"),
+//     passwordHash: "georgepass",
+//     lastLogin: new Date("2025-06-06"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/7.jpg",
+//     bio: "Gamer and tech enthusiast."
+//   },
+//   {
+//     username: "hannah",
+//     email: "hannah@example.com",
+//     phoneNumber: "9334455667",
+//     registeredOn: new Date("2025-01-10"),
+//     passwordHash: "hannahpass",
+//     lastLogin: new Date("2025-06-02"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/8.jpg",
+//     bio: "Fitness freak and foodie."
+//   },
+//   {
+//     username: "ian",
+//     email: "ian@example.com",
+//     phoneNumber: "9445566778",
+//     registeredOn: new Date("2025-02-14"),
+//     passwordHash: "ianpass",
+//     lastLogin: new Date("2025-06-04"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/9.jpg",
+//     bio: "Traveling the world, one city at a time."
+//   },
+//   {
+//     username: "julia",
+//     email: "julia@example.com",
+//     phoneNumber: "9556677889",
+//     registeredOn: new Date("2025-03-21"),
+//     passwordHash: "juliapass",
+//     lastLogin: new Date("2025-06-06"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/10.jpg",
+//     bio: "Writer and poet."
+//   },
+//   {
+//     username: "karthik",
+//     email: "karthik@example.com",
+//     phoneNumber: "9667788990",
+//     registeredOn: new Date("2025-04-02"),
+//     passwordHash: "karthikpass",
+//     lastLogin: new Date("2025-06-01"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/11.jpg",
+//     bio: "Cricket fan. Code is poetry."
+//   },
+//   {
+//     username: "lara",
+//     email: "lara@example.com",
+//     phoneNumber: "9778899001",
+//     registeredOn: new Date("2025-04-15"),
+//     passwordHash: "larapass",
+//     lastLogin: new Date("2025-06-05"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/12.jpg",
+//     bio: "Art student and illustrator."
+//   },
+//   {
+//     username: "mike",
+//     email: "mike@example.com",
+//     phoneNumber: "9889900112",
+//     registeredOn: new Date("2025-05-01"),
+//     passwordHash: "mikepass",
+//     lastLogin: new Date("2025-06-07"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/13.jpg",
+//     bio: "Startup founder. Dream big."
+//   },
+//   {
+//     username: "nina",
+//     email: "nina@example.com",
+//     phoneNumber: "9991001122",
+//     registeredOn: new Date("2025-05-15"),
+//     passwordHash: "ninapass",
+//     lastLogin: new Date("2025-06-08"),
+//     profilePicture: "https://randomuser.me/api/portraits/women/14.jpg",
+//     bio: "Yoga and meditation lover."
+//   },
+//   {
+//     username: "omar",
+//     email: "omar@example.com",
+//     phoneNumber: "9002112233",
+//     registeredOn: new Date("2025-06-01"),
+//     passwordHash: "omarpass",
+//     lastLogin: new Date("2025-06-08"),
+//     profilePicture: "https://randomuser.me/api/portraits/men/15.jpg",
+//     bio: "Always learning, always growing."
+//   }
+// ];
+//
+// const postData = [
+//   {
+//     title: "Exploring the Future of AI",
+//     content: "This post explores the advancements and future possibilities in artificial intelligence.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
+//     dateCreated: new Date("2024-11-19T06:04:27Z"),
+//     dateUpdated: new Date("2024-12-04T06:04:27Z"),
+//     mediaIncluded: [],
+//     upvotes: 943,
+//     downvotes: 355,
+//     score: 588,
+//     commentsCount: 42
+//   },
+//   {
+//     title: "My Journey with Open Source",
+//     content: "Sharing my experiences contributing to open source projects and how it helped my career.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
+//     dateCreated: new Date("2024-06-26T06:04:48Z"),
+//     dateUpdated: new Date("2024-07-23T06:04:48Z"),
+//     mediaIncluded: [],
+//     upvotes: 447,
+//     downvotes: 453,
+//     score: -6,
+//     commentsCount: 90
+//   },
+//   {
+//     title: "Top 10 JavaScript Frameworks in 2025",
+//     content: "An overview of the most popular JavaScript frameworks and their features in 2025.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
+//     dateCreated: new Date("2024-06-12T15:06:02Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 555,
+//     downvotes: 165,
+//     score: 390,
+//     commentsCount: 20
+//   },
+//   {
+//     title: "How to Build a Social Media App",
+//     content: "Step-by-step guide on building a social media application from scratch.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
+//     dateCreated: new Date("2024-07-11T21:18:58Z"),
+//     dateUpdated: new Date("2024-07-13T21:18:58Z"),
+//     mediaIncluded: [],
+//     upvotes: 305,
+//     downvotes: 200,
+//     score: 105,
+//     commentsCount: 51
+//   },
+//   {
+//     title: "Understanding Async/Await in Node.js",
+//     content: "Explaining the async/await syntax and how it simplifies asynchronous programming in Node.js.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
+//     dateCreated: new Date("2024-07-07T13:03:41Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 771,
+//     downvotes: 459,
+//     score: 312,
+//     commentsCount: 54
+//   },
+//   {
+//     title: "Why I Love Functional Programming",
+//     content: "Why functional programming paradigms are gaining popularity among developers.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
+//     dateCreated: new Date("2024-09-21T09:13:49Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 654,
+//     downvotes: 57,
+//     score: 597,
+//     commentsCount: 52
+//   },
+//   {
+//     title: "Tips for Effective Remote Work",
+//     content: "Tips and tricks to stay productive while working remotely.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
+//     dateCreated: new Date("2024-12-27T01:21:12Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 372,
+//     downvotes: 253,
+//     score: 119,
+//     commentsCount: 40
+//   },
+//   {
+//     title: "The Rise of Quantum Computing",
+//     content: "An introduction to quantum computing and its potential impact on technology.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
+//     dateCreated: new Date("2025-02-01T08:03:29Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 621,
+//     downvotes: 278,
+//     score: 343,
+//     commentsCount: 26
+//   },
+//   {
+//     title: "Best Practices for MongoDB Schema Design",
+//     content: "Best practices to design efficient and scalable MongoDB schemas.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
+//     dateCreated: new Date("2024-11-15T01:05:06Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 723,
+//     downvotes: 50,
+//     score: 673,
+//     commentsCount: 18
+//   },
+//   {
+//     title: "How to Secure Your Web Application",
+//     content: "Security measures every web developer should implement to protect their applications.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
+//     dateCreated: new Date("2024-10-25T12:30:50Z"),
+//     dateUpdated: new Date("2024-11-15T12:30:50Z"),
+//     mediaIncluded: [],
+//     upvotes: 445,
+//     downvotes: 408,
+//     score: 37,
+//     commentsCount: 95
+//   },
+//   {
+//     title: "React vs Vue: A Developer's Perspective",
+//     content: "A comparison between React and Vue frameworks from a developer's point of view.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
+//     dateCreated: new Date("2025-04-13T08:07:35Z"),
+//     dateUpdated: new Date("2025-05-11T08:07:35Z"),
+//     mediaIncluded: [],
+//     upvotes: 637,
+//     downvotes: 152,
+//     score: 485,
+//     commentsCount: 94
+//   },
+//   {
+//     title: "Getting Started with Docker",
+//     content: "Getting started with containerization using Docker for development and deployment.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a2'),
+//     dateCreated: new Date("2024-08-17T13:12:51Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 17,
+//     downvotes: 63,
+//     score: -46,
+//     commentsCount: 47
+//   },
+//   {
+//     title: "The Importance of Code Reviews",
+//     content: "The benefits of code reviews and how to conduct them effectively.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
+//     dateCreated: new Date("2024-10-08T15:53:24Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 565,
+//     downvotes: 74,
+//     score: 491,
+//     commentsCount: 0
+//   },
+//   {
+//     title: "Building Scalable APIs with Express",
+//     content: "How to build scalable and maintainable APIs using Express.js.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b6'),
+//     dateCreated: new Date("2025-03-27T15:40:41Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 689,
+//     downvotes: 451,
+//     score: 238,
+//     commentsCount: 30
+//   },
+//   {
+//     title: "CSS Grid vs Flexbox: When to Use Which",
+//     content: "Understanding when to use CSS Grid and Flexbox for layout design.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
+//     dateCreated: new Date("2024-09-12T16:06:30Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 307,
+//     downvotes: 244,
+//     score: 63,
+//     commentsCount: 55
+//   },
+//   {
+//     title: "Introduction to TypeScript",
+//     content: "An introduction to TypeScript and its advantages over plain JavaScript.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ae'),
+//     dateCreated: new Date("2025-01-20T06:48:27Z"),
+//     dateUpdated: new Date("2025-02-06T06:48:27Z"),
+//     mediaIncluded: [],
+//     upvotes: 581,
+//     downvotes: 108,
+//     score: 473,
+//     commentsCount: 34
+//   },
+//   {
+//     title: "Debugging Tips for JavaScript Developers",
+//     content: "Effective debugging techniques for JavaScript applications.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
+//     dateCreated: new Date("2024-09-20T12:33:52Z"),
+//     dateUpdated: new Date("2024-09-30T12:33:52Z"),
+//     mediaIncluded: [],
+//     upvotes: 535,
+//     downvotes: 238,
+//     score: 297,
+//     commentsCount: 65
+//   },
+//   {
+//     title: "How to Contribute to Open Source",
+//     content: "How to find and contribute to open source projects.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
+//     dateCreated: new Date("2024-12-11T22:40:17Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 221,
+//     downvotes: 87,
+//     score: 134,
+//     commentsCount: 99
+//   },
+//   {
+//     title: "Understanding RESTful APIs",
+//     content: "Understanding the principles of RESTful API design.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
+//     dateCreated: new Date("2025-04-23T01:51:02Z"),
+//     dateUpdated: new Date("2025-05-22T01:51:02Z"),
+//     mediaIncluded: [],
+//     upvotes: 627,
+//     downvotes: 139,
+//     score: 488,
+//     commentsCount: 23
+//   },
+//   {
+//     title: "Deploying Node.js Apps to the Cloud",
+//     content: "Guide to deploying Node.js applications on cloud platforms.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
+//     dateCreated: new Date("2024-08-16T10:48:10Z"),
+//     dateUpdated: new Date("2024-08-22T10:48:10Z"),
+//     mediaIncluded: [],
+//     upvotes: 931,
+//     downvotes: 308,
+//     score: 623,
+//     commentsCount: 62
+//   },
+//   {
+//     title: "The Art of Writing Clean Code",
+//     content: "Tips for writing clean, readable, and maintainable code.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
+//     dateCreated: new Date("2024-12-27T08:15:07Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 242,
+//     downvotes: 426,
+//     score: -184,
+//     commentsCount: 43
+//   },
+//   {
+//     title: "Why Testing Matters",
+//     content: "The importance of testing and different testing strategies.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
+//     dateCreated: new Date("2024-06-24T07:35:24Z"),
+//     dateUpdated: new Date("2024-06-26T07:35:24Z"),
+//     mediaIncluded: [],
+//     upvotes: 360,
+//     downvotes: 71,
+//     score: 289,
+//     commentsCount: 50
+//   },
+//   {
+//     title: "GraphQL vs REST: Pros and Cons",
+//     content: "Comparing GraphQL and REST APIs: benefits and drawbacks.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
+//     dateCreated: new Date("2025-04-23T23:19:29Z"),
+//     dateUpdated: new Date("2025-05-19T23:19:29Z"),
+//     mediaIncluded: [],
+//     upvotes: 16,
+//     downvotes: 384,
+//     score: -368,
+//     commentsCount: 75
+//   },
+//   {
+//     title: "Building Real-time Apps with WebSockets",
+//     content: "Building real-time applications using WebSockets technology.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
+//     dateCreated: new Date("2024-09-13T00:38:01Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 642,
+//     downvotes: 143,
+//     score: 499,
+//     commentsCount: 75
+//   },
+//   {
+//     title: "A Guide to Progressive Web Apps",
+//     content: "What makes Progressive Web Apps a game changer in web development.",
+//     creatorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
+//     dateCreated: new Date("2024-08-05T18:21:21Z"),
+//     dateUpdated: null,
+//     mediaIncluded: [],
+//     upvotes: 666,
+//     downvotes: 415,
+//     score: 251,
+//     commentsCount: 8
+//   }
+// ];
+//
+// const commentData = [
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a322'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
+//     content: "Great post! I learned a lot from this.",
+//     createdAt: new Date("2025-05-01T09:10:00Z"),
+//     updatedAt: null,
+//     upvotes: 12,
+//     downvotes: 0,
+//     score: 12,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a323'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
+//     content: "Can you provide more examples?",
+//     createdAt: new Date("2025-05-02T10:05:00Z"),
+//     updatedAt: null,
+//     upvotes: 8,
+//     downvotes: 2,
+//     score: 6,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a324'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a2'),
+//     content: "I disagree with your point on scalability.",
+//     createdAt: new Date("2025-05-03T11:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 2,
+//     downvotes: 7,
+//     score: -5,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a325'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
+//     content: "Thanks for sharing this resource!",
+//     createdAt: new Date("2025-05-04T12:30:00Z"),
+//     updatedAt: null,
+//     upvotes: 15,
+//     downvotes: 0,
+//     score: 15,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a326'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a6'),
+//     content: "How does this compare to other frameworks?",
+//     createdAt: new Date("2025-05-05T13:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 5,
+//     downvotes: 1,
+//     score: 4,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a327'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
+//     content: "Very insightful, thanks!",
+//     createdAt: new Date("2025-05-06T14:15:00Z"),
+//     updatedAt: null,
+//     upvotes: 10,
+//     downvotes: 0,
+//     score: 10,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a328'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
+//     content: "Could you elaborate on the last section?",
+//     createdAt: new Date("2025-05-07T15:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 4,
+//     downvotes: 1,
+//     score: 3,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a329'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
+//     content: "I tried this and it worked perfectly.",
+//     createdAt: new Date("2025-05-08T16:30:00Z"),
+//     updatedAt: null,
+//     upvotes: 9,
+//     downvotes: 0,
+//     score: 9,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32a'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ae'),
+//     content: "What are the limitations of this approach?",
+//     createdAt: new Date("2025-05-09T17:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 3,
+//     downvotes: 2,
+//     score: 1,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32b'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
+//     content: "Loved the explanation!",
+//     createdAt: new Date("2025-05-10T18:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 11,
+//     downvotes: 1,
+//     score: 10,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32c'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b2'),
+//     content: "This is a game changer.",
+//     createdAt: new Date("2025-05-11T19:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 13,
+//     downvotes: 0,
+//     score: 13,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32d'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b4'),
+//     content: "Can you link to the documentation?",
+//     createdAt: new Date("2025-05-12T20:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 2,
+//     downvotes: 0,
+//     score: 2,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32e'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b6'),
+//     content: "I would love to see more posts like this.",
+//     createdAt: new Date("2025-05-13T21:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 7,
+//     downvotes: 0,
+//     score: 7,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32f'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b8'),
+//     content: "This didn't work for me, any tips?",
+//     createdAt: new Date("2025-05-14T22:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 1,
+//     downvotes: 3,
+//     score: -2,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a330'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
+//     content: "Fantastic write-up!",
+//     createdAt: new Date("2025-05-15T23:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 14,
+//     downvotes: 0,
+//     score: 14,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a331'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a0'),
+//     content: "What about edge cases?",
+//     createdAt: new Date("2025-05-16T09:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 4,
+//     downvotes: 2,
+//     score: 2,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a332'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a2'),
+//     content: "Thanks for the detailed explanation.",
+//     createdAt: new Date("2025-05-17T10:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 8,
+//     downvotes: 0,
+//     score: 8,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a333'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a4'),
+//     content: "How would you handle errors in this case?",
+//     createdAt: new Date("2025-05-18T11:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 3,
+//     downvotes: 1,
+//     score: 2,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a334'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a6'),
+//     content: "I appreciate the code samples.",
+//     createdAt: new Date("2025-05-19T12:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 6,
+//     downvotes: 0,
+//     score: 6,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a335'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181a8'),
+//     content: "Could you write about advanced topics next?",
+//     createdAt: new Date("2025-05-20T13:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 5,
+//     downvotes: 0,
+//     score: 5,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a322'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181aa'),
+//     content: "This is so helpful, thank you!",
+//     createdAt: new Date("2025-05-21T14:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 9,
+//     downvotes: 0,
+//     score: 9,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a323'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ac'),
+//     content: "I recommend this to all my friends.",
+//     createdAt: new Date("2025-05-22T15:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 11,
+//     downvotes: 1,
+//     score: 10,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a324'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ae'),
+//     content: "Can you make a video tutorial on this?",
+//     createdAt: new Date("2025-05-23T16:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 6,
+//     downvotes: 0,
+//     score: 6,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a325'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b0'),
+//     content: "Looking forward to your next post!",
+//     createdAt: new Date("2025-05-24T17:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 8,
+//     downvotes: 0,
+//     score: 8,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a326'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b2'),
+//     content: "Super clear and concise.",
+//     createdAt: new Date("2025-05-25T18:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 7,
+//     downvotes: 1,
+//     score: 6,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a327'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b4'),
+//     content: "I have a question about step 3.",
+//     createdAt: new Date("2025-05-26T19:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 2,
+//     downvotes: 0,
+//     score: 2,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a328'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b6'),
+//     content: "This is a must-read for beginners.",
+//     createdAt: new Date("2025-05-27T20:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 10,
+//     downvotes: 0,
+//     score: 10,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a329'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181b8'),
+//     content: "I encountered an error, can you help?",
+//     createdAt: new Date("2025-05-28T21:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 1,
+//     downvotes: 2,
+//     score: -1,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32a'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c181ba'),
+//     content: "This is gold, thanks!",
+//     createdAt: new Date("2025-05-29T22:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 12,
+//     downvotes: 0,
+//     score: 12,
+//     isDeleted: false
+//   },
+//   {
+//     postId: new mongoose.Types.ObjectId('684583d6d83c4fb4b965a32b'),
+//     authorId: new mongoose.Types.ObjectId('68457e1e9af6e7e879c1819e'),
+//     content: "How would you optimize this?",
+//     createdAt: new Date("2025-05-30T23:00:00Z"),
+//     updatedAt: null,
+//     upvotes: 3,
+//     downvotes: 1,
+//     score: 2,
+//     isDeleted: false
+//   }
+// ];
+//
+// export {postData, userData, commentData};

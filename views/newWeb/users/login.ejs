@@ -1,9 +1,37 @@
 <% layout('newWeb/users/layout')%>
 
+<h3>Login</h3>
 
-<p>Sign In Page</p>
-<form action="/users/signin">
-<!--    to be implemented-->
+<%- include('../partials/successFlash', {success}) %>
+<%- include('../partials/errorFlash', {error}) %>
+
+<form autocomplete="off" action="/users/login" class="needs-validation" method="POST" novalidate>
+    <div class="form-group">
+        <label for="username">Username: </label>
+        <input class="form-control" type="text" name="username" id="username" value="<%= (user && user.userid) || '' %>" placeholder="Username" required>
+    </div>
+    <div class="invalid-feedback">
+        Enter username between 3 and 20 characters
+    </div>
+    <div class="valid-feedback">
+        Looks good!
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password: </label>
+        <input class="form-control" type="password" name="password" id="password" value="" placeholder="Password" required/>
+    </div>
+    <div class="valid-feedback">
+        Looks good!
+    </div>
+    <div class="invalid-feedback">
+        Enter valid password
+    </div>
+
+<!--    <div class="form-group">-->
+<!--        <input class="btn btn-primary" type="submit" value="Login" />-->
+<!--    </div>-->
+    <button type="submit">Login</button>
 </form>
-
+<br>
 <a href="/users/signup">Don't have an account? Create one</a>
