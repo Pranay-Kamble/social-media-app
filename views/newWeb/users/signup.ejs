@@ -4,8 +4,8 @@
     <div class="jumbotron col-sm-4 pull-center">
         <h3>Sign Up</h3>
 
-        <%- include('../partials/successFlash.ejs', { success }) %>
-        <%- include('../partials/errorFlash.ejs', { error }) %>
+        <%- include('../partials/success-flash.ejs', { success }) %>
+        <%- include('../partials/error-flash.ejs', { error }) %>
 
         <form autocomplete="off" action="/users/signup" class="needs-validation" method="POST" novalidate>
         <div class="form-group">
@@ -43,5 +43,5 @@
         </div>
         </form>
     </div>
-        <a href="/users/signin">Already have an account? Sign In</a>
+        <a href="/users/login">Already have an account? Log In</a>
 

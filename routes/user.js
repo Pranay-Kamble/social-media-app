@@ -18,7 +18,7 @@ const hashPassword = async (plainText) =>  {
 
 userRoutes.get('/', asyncErrorHandler(async (req, res) => {
     const userData = await User.find({});
-    res.render('newWeb/users/userHome.ejs', {userData})
+    res.render('newWeb/users/user-home.ejs', {userData})
 }))
 
 userRoutes.get('/secret', requireLogin, (req, res) => {
@@ -44,7 +44,7 @@ userRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
     if (userData === null)
         throw new AppError('User does not exist', 404);
     else
-        res.render('newWeb/users/userProfile.ejs', {userData});
+        res.render('newWeb/users/user-profile.ejs', {userData});
 }))
 
 userRoutes.get('/:id/edit', asyncErrorHandler(async (req, res) => {
@@ -54,7 +54,7 @@ userRoutes.get('/:id/edit', asyncErrorHandler(async (req, res) => {
     if (userData === null)
         throw new AppError('User does not exist', 404);
     else
-        res.render('newWeb/users/editUser.ejs', {userData})
+        res.render('newWeb/users/edit-ser.ejs', {userData})
 }))
 
 userRoutes.put('/:id', validateUserEdit, asyncErrorHandler(async (req, res) => {
@@ -67,20 +67,13 @@ userRoutes.put('/:id', validateUserEdit, asyncErrorHandler(async (req, res) => {
 
 userRoutes.post("/login", validateUserLogin, asyncErrorHandler(async (req, res) => {
     const formData = req.body;
-    console.log(formData);
-    const dbData = await User.findOne({userid: formData.username});
 
-    if (dbData === null) {
-        req.flash('error', 'Incorrect username or password');
-        res.render('newWeb/users/login.ejs', {user: formData});
-        return;
-    }
-    const hash = await bcrypt.compare(req.body.password, dbData.password);
-    if (hash) {
-        dbData.lastLogin = Date.now();
-        await dbData.save();
-        req.session.user_id = dbData._id;
-        req.flash("Login Successful");
+    const foundUser = await User.findUserAndValidate(formData.username, formData.password);
+    if (foundUser) {
+        foundUser.lastLogin = Date.now();
+        await foundUser.save();
+        req.session.user_id = foundUser._id;
+        req.flash('success', 'Login Successful');
         res.redirect('/posts');
     }else {
         req.flash('error', 'Invalid username or password');
@@ -93,14 +86,11 @@ userRoutes.post('/logout', requireLogin, (req,res) => {
     res.redirect('/users/login')
 })
 
-
 userRoutes.post('/signup', validateNewUser, asyncErrorHandler(async (req, res) => { //TODO: Proper Validation of email, hashing of password using bcrypt
-    const formData = req.body;
-    formData.password = await hashPassword(formData.password);
-    const newUser = new User({...formData});
-
+    const newUser = new User({...(req.body)});
     await newUser.save();
-    req.flash('success', 'Created new user');
+    req.session.user_id = newUser._id;
+    req.flash('success', 'Created new user and logged in successfully');
     res.redirect(`/users/${newUser._id}`);
 }))
 
