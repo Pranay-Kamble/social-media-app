@@ -1,12 +1,12 @@
 <!--to render all posts in the main page-->
 <% layout('/newWeb/posts/layout.ejs') %>
 
-<%- include('../partials/successFlash.ejs', { success }) %>
-<%- include('../partials/errorFlash.ejs', { error }) %>
+<%- include('../partials/success-flash.ejs', { success }) %>
+<%- include('../partials/error-flash.ejs', { error }) %>
 
 <section class="container">
     <% for (const post of postData){ %>
-        <%- include('../partials/posts/shortPostCard',{post}) %>
+        <%- include('../partials/posts/short-post-card',{post}) %>
         <br>
     <% }%>
 </section>

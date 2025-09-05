@@ -1,6 +1,7 @@
-import { Schema, mongoose } from 'mongoose';
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
     username : { //Rendered only on the profile page of the user
         type: String,
         required : true
@@ -38,6 +39,21 @@ const userSchema = new Schema({
     }
 });
 
-const user = mongoose.model('User', userSchema);
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password'))
+        return next();
+    this.password = await bcrypt.hash(this.password, 12);
+    this.lastLogin = Date.now();
+    next();
+})
 
+userSchema.statics.findUserAndValidate = async function(userid, password) {
+    const foundUser = await this.findOne({userid});
+    if (!foundUser) return false;
+    const isValid = await bcrypt.compareSync(password, foundUser.password);
+
+    return isValid ? foundUser : false;
+}
+
+const user = mongoose.model('User', userSchema);
 export default user;

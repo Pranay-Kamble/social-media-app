@@ -5,8 +5,8 @@
 <a href="/posts">Go Back</a>
 <section class="m-3">
 
-    <%- include('../partials/successFlash.ejs', { success }) %>
-    <%- include('../partials/errorFlash.ejs', { error }) %>
+    <%- include('../partials/success-flash.ejs', { success }) %>
+    <%- include('../partials/error-flash.ejs', { error }) %>
 
     <div class="container mb-5">
         <h3><%= post.title %></h3>
@@ -29,7 +29,7 @@
                 <h4>Comments</h4>
                 <div class="comment-view">
                     <% for (const comment of postComments) {%>
-                        <%- include('../partials/comments/commentCard.ejs', { comment }) %>
+                        <%- include('../partials/comments/comment-card.ejs', { comment }) %>
                     <% } %>
                 </div>
             </div>

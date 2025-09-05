@@ -3,8 +3,8 @@
 <section>
     <h3>Edit Post</h3>
 
-    <%- include('../partials/successFlash.ejs', { success }) %>
-    <%- include('../partials/errorFlash.ejs', { error }) %>
+    <%- include('../partials/success-flash.ejs', { success }) %>
+    <%- include('../partials/error-flash.ejs', { error }) %>
 
     <form class="mb-4 needs-validation" action="<%=`/posts/${post._id}/edit?_method=PUT`%>" method="POST" novalidate>
         <div class="form-group mb-2 col-sm-4">
