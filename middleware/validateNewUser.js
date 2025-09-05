@@ -6,8 +6,8 @@ import mongoose from "mongoose";
 const validateNewUser = async (req, res, next) => {
     const userSchema = joi.object({
         email: joi.string().email().required(),
-        username: joi.string().required(),
-        userid: joi.string().required().min(3).max(20),
+        display_name: joi.string().required(),
+        username: joi.string().required().min(3).max(20),
         bio: joi.string().optional().allow(''),
         registeredOn: joi.date().iso(),
         password: joi.string().min(8).max(20),
@@ -25,7 +25,7 @@ const validateNewUser = async (req, res, next) => {
     const userSearch = await User.findOne({
         $or: [
             {email: formData.email},
-            {userid: formData.userid}
+            {username: formData.username}
         ]
     });
     console.log("user Search: ");
@@ -38,8 +38,8 @@ const validateNewUser = async (req, res, next) => {
             res.render('newWeb/users/signup.ejs', {user: formData});
             return;
         }
-        if (userSearch.userid === formData.userid) {
-            req.flash('error', 'UserID already in use!');
+        if (userSearch.username === formData.username) {
+            req.flash('error', 'Username already in use!');
             res.render('newWeb/users/signup.ejs', {user: formData});
             return;
         }

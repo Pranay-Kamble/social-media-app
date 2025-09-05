@@ -11,6 +11,8 @@ import ejsMate from 'ejs-mate'
 import AppError from './utils/AppError.js';
 import session from 'express-session';
 import flash from 'connect-flash'
+import passport from 'passport';
+import passportLocal from 'passport-local';
 
 const __filename = fileURLToPath(import.meta.url);
 

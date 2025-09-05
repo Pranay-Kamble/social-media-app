@@ -54,7 +54,7 @@ userRoutes.get('/:id/edit', asyncErrorHandler(async (req, res) => {
     if (userData === null)
         throw new AppError('User does not exist', 404);
     else
-        res.render('newWeb/users/edit-ser.ejs', {userData})
+        res.render('newWeb/users/edit-user.ejs', {userData})
 }))
 
 userRoutes.put('/:id', validateUserEdit, asyncErrorHandler(async (req, res) => {
