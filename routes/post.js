@@ -5,6 +5,7 @@ import methodOverride from "method-override";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js"
 import AppError from "../utils/AppError.js"
 import joi from "joi"
+import requireLogin from "../middleware/requireLogin.js";
 
 const postRoutes = express.Router();
 postRoutes.use(methodOverride('_method'));
@@ -14,13 +15,9 @@ postRoutes.get('/', asyncErrorHandler(async (req, res) => {
     res.render('newWeb/posts/posts', {postData})
 }))
 
-postRoutes.get('/create',  (req, res) => {
-    res.render('newWeb/posts/createPost');
+postRoutes.get('/create',  requireLogin, (req, res) => {
+    res.render('newWeb/posts/create-post');
 })
-//**************************
-//make this a protected route, allow only when user is valid or send them to signin or signup
-//**************************
-
 
 postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
     const postId = req.params.id;
@@ -33,13 +30,10 @@ postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
     }
     const postComments = await Comment.find({postId: postId});
 
-    res.render('newWeb/posts/postView', { post, postComments })
+    res.render('newWeb/posts/post-view', { post, postComments })
 }))
 
-postRoutes.post('/create' ,asyncErrorHandler(async (req, res) => {
-
-    //Check if it is coming from a valid login session, else anyone can add a post through postman
-    //Proper middleware has to be implemented
+postRoutes.post('/create', requireLogin, asyncErrorHandler(async (req, res) => {
 
     console.log("Received POST request");
     const formData = req.body;
@@ -58,7 +52,7 @@ postRoutes.post('/create' ,asyncErrorHandler(async (req, res) => {
     const newPost = {...formData};
     newPost.commentsCount = newPost.downvotes = newPost.upvotes = newPost.score = 0
 
-    newPost.creatorId ='68457e1e9af6e7e879c1819e'; //fixed for now, later after implementing auth we will change it dynamically
+    newPost.creatorId = req.user._id;
     newPost.mediaIncluded = []; //empty for now, later add them to list through form data
 
     newPost.dateCreated = newPost.dateUpdated =  new Date(Date.now()).toISOString();

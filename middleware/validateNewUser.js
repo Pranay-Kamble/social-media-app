@@ -1,7 +1,5 @@
 import joi from "joi";
 import User from "../models/user.js";
-import AppError from "../utils/AppError.js";
-import mongoose from "mongoose";
 
 const validateNewUser = async (req, res, next) => {
     const userSchema = joi.object({
@@ -18,38 +16,21 @@ const validateNewUser = async (req, res, next) => {
     const { error } = userSchema.validate(formData)
 
     if (error) {
-        const msg = error.details.map(err => err.message).join(',')
-        throw new AppError(msg, 404)
+        req.flash('error', error);
+        return res.redirect('newWeb/users/signup', {user: formData});
     }
 
-    const userSearch = await User.findOne({
-        $or: [
-            {email: formData.email},
-            {username: formData.username}
-        ]
-    });
-    console.log("user Search: ");
-    console.log(userSearch);
+    const userSearch = await User.findOne({ email: formData.email });
 
-    //**************** Move these checks to client side somehow for real time update**********************
-    if (userSearch) {
-        if (userSearch.email === formData.email) {
-            req.flash('error', 'Email already exists!');
-            res.render('newWeb/users/signup.ejs', {user: formData});
-            return;
-        }
-        if (userSearch.username === formData.username) {
-            req.flash('error', 'Username already in use!');
-            res.render('newWeb/users/signup.ejs', {user: formData});
-            return;
-        }
+    if (userSearch != null && (userSearch.email === formData.email)) {
+        req.flash('error', 'Email already exists!');
+        return res.render('newWeb/users/signup.ejs', {user: formData});
     }
+
     if (formData.password !== formData.confirmpassword) {
         req.flash('error', 'Passwords do not match!');
-        res.render('newWeb/users/signup.ejs', {user: formData});
-        return;
+        return res.render('newWeb/users/signup.ejs', {user: formData});
     }
-    //*************** Move these check to client side somehow **********************
     next();
 }
 
