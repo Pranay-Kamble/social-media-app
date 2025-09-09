@@ -1,30 +1,29 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = new mongoose.Schema({
-    username : { //Rendered only on the profile page of the user
+    display_name : { //Rendered only on the profile page of the user
         type: String,
         required : true
     },
-    userid : { //this is used to display the user
+    username : { //this is used to display the user
         type: String,
         required: true,
         minLength: 3,
-        maxLength: 20
+        maxLength: 20,
+        unique: true
     },
     email : {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     phoneNumber : String,
     registeredOn : {
         type: Date,
         required : true,
         default: Date.now
-    },
-    password : {
-        type: String,
-        required: [true , 'Password cannot be blank'],
     },
     lastLogin : {
         type: Date
@@ -38,22 +37,8 @@ const userSchema = new mongoose.Schema({
         maxLength: 250
     }
 });
+//passwords are handled by passport js
+userSchema.plugin(passportLocalMongoose);
 
-userSchema.pre('save', async function(next) {
-    if (!this.isModified('password'))
-        return next();
-    this.password = await bcrypt.hash(this.password, 12);
-    this.lastLogin = Date.now();
-    next();
-})
 
-userSchema.statics.findUserAndValidate = async function(userid, password) {
-    const foundUser = await this.findOne({userid});
-    if (!foundUser) return false;
-    const isValid = await bcrypt.compareSync(password, foundUser.password);
-
-    return isValid ? foundUser : false;
-}
-
-const user = mongoose.model('User', userSchema);
-export default user;
+export default (mongoose.models.User) || (mongoose.model('User', userSchema));
