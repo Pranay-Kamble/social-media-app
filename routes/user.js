@@ -8,6 +8,7 @@ import validateUserEdit from "../middleware/validateUserEdit.js";
 import passport from 'passport'
 import validateNewUser from "../middleware/validateNewUser.js";
 import storeLastVisited from "../middleware/storeLastVisited.js";
+import isCorrectUser from "../middleware/isCorrectUser.js";
 
 const userRoutes = express.Router();
 userRoutes.use(methodOverride('_method'));
@@ -44,7 +45,7 @@ userRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
         res.render('newWeb/users/user-profile.ejs', {userData});
 }))
 
-userRoutes.get('/:id/edit', requireLogin, asyncErrorHandler(async (req, res) => {
+userRoutes.get('/:id/edit', requireLogin, isCorrectUser, asyncErrorHandler(async (req, res) => {
     const id = req.params.id;
     const userData = await User.findOne({_id: id})
 
@@ -54,7 +55,7 @@ userRoutes.get('/:id/edit', requireLogin, asyncErrorHandler(async (req, res) => 
         res.render('newWeb/users/edit-user.ejs', {userData})
 }))
 
-userRoutes.put('/:id', requireLogin, validateUserEdit, asyncErrorHandler(async (req, res) => {
+userRoutes.put('/:id', requireLogin, isCorrectUser, validateUserEdit, asyncErrorHandler(async (req, res) => {
     const id = req.params.id;
     const newUserData = req.body;
     await User.updateOne({_id: id}, {$set: {username: newUserData.username, email: newUserData.email, bio: newUserData.bio}});
@@ -65,13 +66,13 @@ userRoutes.put('/:id', requireLogin, validateUserEdit, asyncErrorHandler(async (
 userRoutes.post('/login', storeLastVisited, passport.authenticate('local', {failureFlash: true, failureRedirect:'/users/login'}), asyncErrorHandler(async (req, res) => {
     const formData = req.body;
     const foundUser = await User.findOne( {username: formData.username}, { _id: 1 , lastLogin: 1} );
-
+    console.log("go to: ", res.locals.returnTo);
     if (foundUser) {
         foundUser.lastLogin = Date.now();
         await foundUser.save();
         req.flash('success', 'Login Successful');
         const redirectLink = res.locals.returnTo || '/posts';
-
+        console.log("Redirect Link: ", redirectLink);
         res.redirect(redirectLink || '/posts');
     }else {
         req.flash('error', 'Invalid username or password');
@@ -110,7 +111,7 @@ userRoutes.post('/signup', validateNewUser, asyncErrorHandler(async (req, res, n
     }
 }))
 
-userRoutes.delete('/:id', requireLogin  ,asyncErrorHandler(async (req, res) => {
+userRoutes.delete('/:id', requireLogin, isCorrectUser, asyncErrorHandler(async (req, res) => {
     const id = req.params.id;
     await User.deleteOne({_id: id});
     req.flash('success', 'Deleted user!')

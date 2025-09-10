@@ -1,8 +1,5 @@
 import mongoose from 'mongoose'
 
-mongoose.connect('mongodb://127.0.0.1/SocialMediaApplication')
-    .then(() => console.log("Connected OK in Comments"))
-    .catch(() => console.log('Connection Failed Bruh in Comments!! :('));
 
 const comment = mongoose.Schema({
     postId : {
@@ -13,7 +10,7 @@ const comment = mongoose.Schema({
     authorId : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        // required: true
+        required: true
     },
     content : {
         type: String,

@@ -6,6 +6,7 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js"
 import AppError from "../utils/AppError.js"
 import joi from "joi"
 import requireLogin from "../middleware/requireLogin.js";
+import isPostAuthor from "../middleware/isPostAuthor.js"
 
 const postRoutes = express.Router();
 postRoutes.use(methodOverride('_method'));
@@ -35,7 +36,6 @@ postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
 
 postRoutes.post('/create', requireLogin, asyncErrorHandler(async (req, res) => {
 
-    console.log("Received POST request");
     const formData = req.body;
 
     const postSchema = joi.object({
@@ -61,26 +61,20 @@ postRoutes.post('/create', requireLogin, asyncErrorHandler(async (req, res) => {
 
     const newPostObject = new Post({...newPost});
     await newPostObject.save()
-    console.log(newPostObject);
 
     const id = newPostObject._id;
     req.flash('success', 'Successfully created the post!')
     res.redirect(`/posts/${id}`);
 }))
 
-postRoutes.get('/:id/edit', asyncErrorHandler(async (req, res) => {
-
-    //User can only edit a post if the post has been created by the user and user has a valid login session
-
+postRoutes.get('/:id/edit', requireLogin, isPostAuthor, (async (req, res) => {
     const postId = req.params.id;
     const post = await Post.findById({_id: postId});
+
     res.render('newWeb/posts/edit', { post });
 }))
 
-postRoutes.put('/:id/edit',  asyncErrorHandler(async (req, res) => {
-
-    //again same, post should be from same user and user must have valid login session
-
+postRoutes.put('/:id/edit', requireLogin, isPostAuthor, asyncErrorHandler(async (req, res) => {
     const postId = req.params.id;
     const formData = req.body;
 
@@ -95,16 +89,14 @@ postRoutes.put('/:id/edit',  asyncErrorHandler(async (req, res) => {
         throw new AppError(msg, 400)
     }
 
-    const updatedPost = await Post.findByIdAndUpdate({_id: postId}, {...formData, dateUpdated: new Date().toISOString()});
+    await Post.findByIdAndUpdate({_id: postId}, {...formData, dateUpdated: new Date().toISOString()});
     req.flash('success', 'Edit was successful')
     res.redirect(`/posts/${postId}`);
 }))
 
-postRoutes.delete('/:id/delete', asyncErrorHandler(async (req, res) => {
-    //implement proper middleware function
-
+postRoutes.delete('/:id/delete', requireLogin, isPostAuthor, (async (req, res) => {
     const postId = req.params.id;
-    const post = await Post.findByIdAndDelete({_id: postId});
+    await Post.findByIdAndDelete({_id: postId});
     req.flash('success', 'Post deleted successfully')
     res.redirect(`/posts`);
 }))

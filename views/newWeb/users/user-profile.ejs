@@ -3,6 +3,9 @@
 <body>
     <title>User Profile</title>
     <h1>User Profile</h1>
+    <%- include('../partials/success-flash.ejs', { success }) %>
+    <%- include('../partials/error-flash.ejs', { error }) %>
+    <a href="/users">Go Back</a>
     <div>
         <p> DisplayName: <%- userData.display_name %></p>
         <p> UserName: <%- userData.username %></p>
@@ -10,11 +13,13 @@
         <p> RegisteredOn: <%- userData.registeredOn %></p>
         <p> Bio: <%- userData.bio %></p>
 
-        <a href="<%=`/users/${userData._id}/edit`%>">Edit Details</a> <br>
-        <a href="/users">Go Back</a>
-
-        <form action="/users/<%=`${userData._id}`%>?_method=DELETE" method="post">
-            <input type="submit" value="Delete">
-        </form>
+        <% if ((currentUser._id.equals(userData._id))) {%>
+            <button>
+                <a href="<%=`/users/${userData._id}/edit`%>">Edit Details</a> <br>
+            </button>
+            <form action="/users/<%=`${userData._id}`%>?_method=DELETE" method="post">
+                <input type="submit" value="Delete">
+            </form>
+        <% } %>
     </div>
 </body>

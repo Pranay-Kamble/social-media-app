@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 import Comment from './comment.js'
 
-mongoose.connect('mongodb://127.0.0.1/SocialMediaApplication')
-    .then(() => console.log("Connection OK in Posts"))
-    .catch(() => console.log("Connection Failed in Posts!!!"));
-
 const post = mongoose.Schema({
     title : {
         type: String,
