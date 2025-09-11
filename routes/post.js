@@ -29,8 +29,8 @@ postRoutes.get('/:id', asyncErrorHandler(async (req, res) => {
         res.redirect('/posts');
         return;
     }
-    const postComments = await Comment.find({postId: postId});
-
+    const postComments = await Comment.find({postId: postId}).populate('authorId');
+    console.log(postComments);
     res.render('newWeb/posts/post-view', { post, postComments })
 }))
 

@@ -26,8 +26,9 @@
 <!--    Then load the comments-->
 
     <div class="container mt-2">
-        <div class="row">
-            <div class="col">
+        <div class="row g-2">
+
+            <div class="col-sm border rounded bg-light p-3">
                 <h4>Comments</h4>
                 <div class="comment-view">
                     <% for (const comment of postComments) {%>
@@ -36,16 +37,22 @@
                 </div>
             </div>
 
-            <div class="col-sm">
+            <div class="col-sm border rounded bg-light p-3">
                 <h4>Leave a comment</h4>
-                <form action="/comments/posts/<%=post._id%>" method="POST" class="needs-validation" novalidate>
-                    <textarea class="form-control" required name="content" id="comment" cols="30" rows="5" placeholder="Add a comment"></textarea>
-                    <br>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-info">Add Comment</button>
-                </form>
+                <% if (currentUser) {%>
+                    <form action="/comments/posts/<%=post._id%>" method="POST" class="needs-validation" novalidate>
+                        <textarea class="form-control" required name="content" id="comment" cols="30" rows="5" placeholder="Add a comment"></textarea>
+                        <br>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-info">Add Comment</button>
+                    </form>
+                <%}else{%>
+                    <h6>Login to add a comment</h6>
+
+                    <a href="/users/login"><button>Login</button></a>
+                <%}%>
             </div>
         </div>
 
