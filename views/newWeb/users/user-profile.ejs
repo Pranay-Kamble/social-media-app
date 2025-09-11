@@ -12,14 +12,14 @@
         <p> Email: <%- userData.email %></p>
         <p> RegisteredOn: <%- userData.registeredOn %></p>
         <p> Bio: <%- userData.bio %></p>
-
-        <% if ((currentUser._id.equals(userData._id))) {%>
+<!--        <%console.log("Inside userprofile: ", userData._id)%>-->
+<!--        <% if (currentUser && (currentUser._id.equals(userData._id))) {%>-->
             <button>
                 <a href="<%=`/users/${userData._id}/edit`%>">Edit Details</a> <br>
             </button>
             <form action="/users/<%=`${userData._id}`%>?_method=DELETE" method="post">
                 <input type="submit" value="Delete">
             </form>
-        <% } %>
+<!--        <% } %>-->
     </div>
 </body>

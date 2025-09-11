@@ -7,11 +7,11 @@
                 <%= comment.content %>
             </p>
             <figcaption class="blockquote-footer">
-                <%= comment.authorId.username %>
+                <%= comment.creatorId.username %>
             </figcaption>
             <p>+: <%=comment.upvotes %>  -:<%= comment.downvotes %> </p>
 
-            <% if (currentUser && currentUser._id.equals(comment.authorId._id)) { %>
+            <% if (currentUser && currentUser._id.equals(comment.creatorId._id)) { %>
                 <form class="d-inline-block" action="<%=`/comments/${comment._id}/delete?_method=DELETE`%>" method="POST">
                     <button type='submit' class="btn btn-sm btn-danger">Delete</button>
                 </form>

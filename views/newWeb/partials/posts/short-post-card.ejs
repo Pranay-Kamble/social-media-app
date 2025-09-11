@@ -2,11 +2,11 @@
 
 <section class="short-post-section">
         <!--        need a border and inside that content, like reddit post-->
-
+    <% console.log(post) %>
     <div class="card" style="width: 50rem;">
         <div class="card-body">
             <h5 class="card-title"><a href="/posts/<%=post._id%>"> <%= post.title %> </a></h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary"><a href="/users/<%=post.creatorId%>"><%=post.creatorId%></a></h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary"><a href="/users/<%=post.creatorId._id%>"><%=post.creatorId.username%></a></h6>
             <p class="card-text"><%= post.content.slice(0,45) + '...' %></p>
         </div>
     </div>

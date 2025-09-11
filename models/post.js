@@ -11,7 +11,7 @@ const post = mongoose.Schema({
     },
     creatorId : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users',
+        ref: 'User',
         required: true
     },
     dateCreated : {
