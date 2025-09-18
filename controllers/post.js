@@ -2,6 +2,7 @@ import Post from "../models/post.js";
 import Comment from "../models/comment.js";
 import joi from "joi";
 import AppError from "../utils/AppError.js";
+import { cloudinary } from '../cloudinary/index.js'
 
 const home = async (req, res) => {
     const postData = await Post.find().populate('creatorId', 'username _id');
@@ -46,14 +47,13 @@ const createPost = async (req, res) => {
     newPost.commentsCount = newPost.downvotes = newPost.upvotes = newPost.score = 0
 
     newPost.creatorId = req.user._id;
-    newPost.mediaIncluded = []; //empty for now, later add them to list through form data
+    newPost.mediaIncluded = req.files.map(f => ({url: f.path, filename: f.filename}));
 
     newPost.dateCreated = newPost.dateUpdated =  new Date(Date.now()).toISOString();
-    delete newPost.file;
     console.log(newPost);
 
     const newPostObject = new Post({...newPost});
-    await newPostObject.save()
+    await newPostObject.save();
 
     const id = newPostObject._id;
     req.flash('success', 'Successfully created the post!')
@@ -70,10 +70,11 @@ const renderEdit = async (req, res) => {
 const editPost = async (req, res) => {
     const postId = req.params.id;
     const formData = req.body;
-
+    console.log(req.body);
     const postSchema = joi.object({
         title: joi.string().required().min(1),
-        content: joi.string()
+        content: joi.string(),
+        deleteImages: joi.array()
     })
     const { error } = postSchema.validate(formData);
 
@@ -82,7 +83,19 @@ const editPost = async (req, res) => {
         throw new AppError(msg, 400)
     }
 
-    await Post.findByIdAndUpdate({_id: postId}, {...formData, dateUpdated: new Date().toISOString()});
+    console.log(req.body.deleteImages);
+    if (req.body.deleteImages) {
+        for (let imgName of req.body.deleteImages) {
+            console.log(imgName);
+            console.log(await cloudinary.uploader.destroy(imgName));
+        }
+        await Post.updateOne({_id: postId}, {$pull: { mediaIncluded : { filename: {$in: req.body.deleteImages }}}});
+    }
+
+    const updatePost = await Post.findByIdAndUpdate({_id: postId}, {...formData, dateUpdated: new Date().toISOString()});
+    const newImages = req.files.map(f => ({url: f.path, filename: f.filename}));
+    updatePost.mediaIncluded.push(...newImages);
+    updatePost.save();
     req.flash('success', 'Edit was successful')
     res.redirect(`/posts/${postId}`);
 }

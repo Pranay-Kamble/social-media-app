@@ -14,7 +14,6 @@ import flash from 'connect-flash'
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import User from './models/User.js';
-
 const __filename = fileURLToPath(import.meta.url);
 
 mongoose.connect('mongodb://127.0.0.1/SocialMediaApplication')

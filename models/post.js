@@ -1,6 +1,15 @@
 import mongoose from 'mongoose'
 import Comment from './comment.js'
 
+const image = mongoose.Schema({
+    url: String,
+    filename: String
+})
+
+image.virtual('thumbnail').get(function() {
+    return this.url.replace('/upload', '/upload/w_400');
+})
+
 const post = mongoose.Schema({
     title : {
         type: String,
@@ -22,7 +31,7 @@ const post = mongoose.Schema({
         type: Date
     },
     mediaIncluded : {
-        type: [String] //Paths to the media files like images, videos in the storage disk
+        type: [ image ]
     },
     upvotes : {
         type: Number,
