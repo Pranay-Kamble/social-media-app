@@ -13,7 +13,6 @@ import session from 'express-session';
 import flash from 'connect-flash'
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
-import User from './models/User.js';
 import dotenv from 'dotenv';
 import MongoStore from 'connect-mongo';
 
