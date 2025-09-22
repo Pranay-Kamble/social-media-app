@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Comment from './comment.js'
+import {cloudinary} from "../cloudinary/index.js";
 
 const image = mongoose.Schema({
     url: String,
@@ -57,6 +58,15 @@ post.post('findOneAndDelete', async (deletedPost) => {
         await Comment.deleteMany({postId: deletedPost._id});
     }
     console.log("Mongo Middleware: Deleted all comments of " + deletedPost._id);
+
+    const { mediaIncluded } = deletedPost;
+    if (mediaIncluded) {
+        for (let img of mediaIncluded) {
+            await cloudinary.uploader.destroy(img.filename);
+        }
+
+        console.log("Mongo Middleware: Deleted all included images from " + deletedPost._id);
+    }
 })
 
 const Post = mongoose.model('Post', post);
