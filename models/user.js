@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
 import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = new mongoose.Schema({

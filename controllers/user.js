@@ -4,19 +4,19 @@ import AppError from "../utils/AppError.js";
 
 const home =async (req, res) => {
     const userData = await User.find({});
-    res.render('newWeb/users/user-home.ejs', {userData})
+    res.render('users/user-home.ejs', {userData})
 }
 
 const renderSignUp = (req, res) => {
-    res.render('newWeb/users/signup.ejs' , {user:{}})
+    res.render('users/signup.ejs' , {user:{}})
 }
 
 const renderLogin = (req, res) => {
-    res.render('newWeb/users/login.ejs',{user:{}});
+    res.render('users/login.ejs',{user:{}});
 }
 
 const renderLogout = (req, res) => {
-    res.render('newWeb/users/logout.ejs');
+    res.render('users/logout.ejs');
 }
 
 const renderUser = async (req, res) => {
@@ -27,7 +27,7 @@ const renderUser = async (req, res) => {
     if (userData === null)
         throw new AppError('User does not exist', 404);
     else
-        res.render('newWeb/users/user-profile.ejs', {userData});
+        res.render('users/user-profile.ejs', {userData});
 }
 
 const renderUserEdit = async (req, res) => {
@@ -37,7 +37,7 @@ const renderUserEdit = async (req, res) => {
     if (userData === null)
         throw new AppError('User does not exist', 404);
     else
-        res.render('newWeb/users/edit-user.ejs', {userData})
+        res.render('users/edit-user.ejs', {userData})
 }
 
 const edit = async (req, res) => {
@@ -61,7 +61,7 @@ const login = async (req, res) => {
         res.redirect(redirectLink || '/posts');
     }else {
         req.flash('error', 'Invalid username or password');
-        res.render('newWeb/users/login.ejs', {user: formData});
+        res.render('users/login.ejs', {user: formData});
     }
 }
 
@@ -92,7 +92,7 @@ const signup = async (req, res, next) => {
         });
     }catch(err) {
         req.flash('error', err.message);
-        res.render('newWeb/users/signup.ejs', {user: formData});
+        res.render('users/signup.ejs', {user: formData});
     }
 }
 

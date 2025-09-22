@@ -17,19 +17,19 @@ const validateNewUser = async (req, res, next) => {
 
     if (error) {
         req.flash('error', error);
-        return res.redirect('newWeb/users/signup', {user: formData});
+        return res.redirect('users/signup', {user: formData});
     }
 
     const userSearch = await User.findOne({ email: formData.email });
 
     if (userSearch != null && (userSearch.email === formData.email)) {
         req.flash('error', 'Email already exists!');
-        return res.render('newWeb/users/signup.ejs', {user: formData});
+        return res.render('users/signup.ejs', {user: formData});
     }
 
     if (formData.password !== formData.confirmpassword) {
         req.flash('error', 'Passwords do not match!');
-        return res.render('newWeb/users/signup.ejs', {user: formData});
+        return res.render('users/signup.ejs', {user: formData});
     }
     next();
 }

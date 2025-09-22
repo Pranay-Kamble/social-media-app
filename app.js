@@ -14,18 +14,40 @@ import flash from 'connect-flash'
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import User from './models/User.js';
-const __filename = fileURLToPath(import.meta.url);
+import dotenv from 'dotenv';
+import MongoStore from 'connect-mongo';
 
-mongoose.connect('mongodb://127.0.0.1/SocialMediaApplication')
-        .then(() => {
-            console.log('Connected to the MongoDB');
-        })
-        .catch(() => {
-            console.log("Bruhh! There is some error");
-        })
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const dbUrl = process.env.MONGODB_URI;
 
 const app = express();
+
+await async function mongoConnect() {
+    try {
+        await mongoose.connect(dbUrl);
+        console.log('Connected to the MongoDB');
+    } catch (err) {
+        console.error("Error connecting to the database:", err);
+        process.exit(1);
+    }
+}();
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
+
+store.on('error', function(e) {
+    console.log("Session Store Error: " + e.message);
+});
+
 const sessionConfig = {
+    store,
     secret : 'thisshouldbeabettersecretkey',
     resave: false,
     saveUninitialized: true,
@@ -63,7 +85,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req,res) => {
-    res.render('newWeb/home');
+    res.render('home');
 })
 
 //Routes
@@ -78,7 +100,7 @@ app.all(/(.*)/, (req, res) => {
 
 app.use((err, req, res, next) => {
     const { status } = err;
-    res.status(status || 500).render('newWeb/error', { err })
+    res.status(status || 500).render('error', { err })
 })
 
 app.listen(3000, () => {

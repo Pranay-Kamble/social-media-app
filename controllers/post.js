@@ -7,11 +7,11 @@ import { cloudinary } from '../cloudinary/index.js'
 const home = async (req, res) => {
     const postData = await Post.find().populate('creatorId', 'username _id');
     console.log(postData);
-    res.render('newWeb/posts/posts', {postData})
+    res.render('posts/posts', {postData})
 }
 
 const renderCreatePost = (req, res) => {
-    res.render('newWeb/posts/create-post');
+    res.render('posts/create-post');
 }
 
 const renderPost = async (req, res) => {
@@ -25,7 +25,7 @@ const renderPost = async (req, res) => {
     }
     const postComments = await Comment.find({postId}).populate('creatorId', 'username _id');
     console.log(postComments);
-    res.render('newWeb/posts/post-view', { post, postComments })
+    res.render('posts/post-view', { post, postComments })
 }
 
 const createPost = async (req, res) => {
@@ -64,7 +64,7 @@ const renderEdit = async (req, res) => {
     const postId = req.params.id;
     const post = await Post.findById({_id: postId});
 
-    res.render('newWeb/posts/edit', { post });
+    res.render('posts/edit', { post });
 }
 
 const editPost = async (req, res) => {
