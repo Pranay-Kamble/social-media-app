@@ -7,6 +7,7 @@ import postRoutes from './routes/post.js';
 import methodOverride from 'method-override'
 import { fileURLToPath } from 'url';
 import morgan from 'morgan';
+import User from './models/user.js';
 import ejsMate from 'ejs-mate'
 import AppError from './utils/AppError.js';
 import session from 'express-session';
