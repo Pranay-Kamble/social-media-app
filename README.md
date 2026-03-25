@@ -3,11 +3,11 @@
 A full-stack, community-driven discussion platform inspired by the architecture of Reddit. This project serves as a foundational milestone in my web development journey, transitioning from theoretical concepts to practical, scalable implementation.
 
 
-## 🏛️ Project Genesis & Educational Journey
+## Project Genesis & Educational Journey
 This application was developed following my participation as a finalist in the **UBS India Hackathon**. That experience served as a significant professional "eye-opener," revealing the complexities of real-world software engineering. This project was built to bridge that gap, moving from entry-level experimentation to a structured understanding of full-stack ecosystems.
 
 
-## 🛠️ Technical Stack
+## Technical Stack
 * **Runtime Environment:** Node.js
 * **Backend Framework:** Express.js (RESTful Routing)
 * **Database:** MongoDB with Mongoose ODM (Object Data Modeling)
@@ -17,7 +17,7 @@ This application was developed following my participation as a finalist in the *
 * **Media Management:** Cloudinary API (Cloud-based image hosting and transformations)
 
 
-## 🚀 Key Implementations & Lessons
+## Key Implementations & Lessons
 
 ### 1. Robust Authentication & Authorization
 * Implemented **Passport.js** for secure session management and user authentication.
@@ -36,14 +36,14 @@ This application was developed following my participation as a finalist in the *
 * Implemented a responsive Bootstrap carousel for multi-image post displays.
 
 
-## 📈 Technical Challenges Overcome
+## Technical Challenges Overcome
 
 * **Asynchronous Flow Control:** Mastered the use of `async/await` to handle database I/O, ensuring data is fully resolved before rendering the view layer.
 * **Directory Management:** Overcame pathing complexities within nested folders (e.g., `/views/posts/`) to ensure consistent rendering of global partials.
 * **Validation Logic:** Implemented both client-side (Bootstrap 5) and server-side validation to ensure data quality and application stability.
 
 
-## 💻 Local Setup
+## Local Setup
 
 1.  **Clone the repository:**
     ```bash
