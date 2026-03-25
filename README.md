@@ -47,7 +47,7 @@ This application was developed following my participation as a finalist in the *
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/article-social-platform.git](https://github.com/your-username/article-social-platform.git)
+    git clone https://github.com/your-username/article-social-platform.git
     ```
 2.  **Install dependencies:**
     ```bash
