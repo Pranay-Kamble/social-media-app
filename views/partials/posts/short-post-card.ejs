@@ -1,14 +1,14 @@
-<!--For short post view on the home page, should be used as a partial or component-->
-
-<section class="short-post-section">
-        <!--        need a border and inside that content, like reddit post-->
-    <% console.log(post) %>
-    <div class="card" style="width: 50rem;">
-        <div class="card-body">
-            <h5 class="card-title"><a href="/posts/<%=post._id%>"> <%= post.title %> </a></h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary"><a href="/users/<%=post.creatorId._id%>"><%=post.creatorId.username%></a></h6>
-            <p class="card-text"><%= post.content.slice(0,45) + '...' %></p>
-        </div>
+<div class="card mb-3 shadow-sm border-0">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="/posts/<%= post._id %>" class="text-decoration-none text-dark"><%= post.title %></a>
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            By <a href="/users/<%= post.creatorId._id %>" class="text-decoration-none"><%= post.creatorId.username %></a>
+        </h6>
+        <p class="card-text">
+            <%= post.content.length > 45 ? post.content.slice(0, 45) + '...' : post.content %>
+        </p>
+        <a href="/posts/<%= post._id %>" class="btn btn-sm btn-outline-primary">Read More</a>
     </div>
-
-</section>
+</div>

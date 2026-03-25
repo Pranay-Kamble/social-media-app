@@ -1,32 +1,31 @@
-<% layout('users/layout') %>
+<%- layout('layout.ejs') %>
 
-<h2>Edit User Details</h2>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4 bg-white p-4 border rounded shadow-sm">
+        <h2 class="mb-3 text-center">Edit User Details</h2>
+        <p class="text-muted text-center small">User ID: <%= userData._id %></p>
 
-<%- include('../partials/success-flash.ejs', { success }) %>
-<%- include('../partials/error-flash.ejs', { error }) %>
+        <%- include('../partials/success-flash.ejs', { success }) %>
+        <%- include('../partials/error-flash.ejs', { error }) %>
 
-<div class="jumbotron col-sm-4 pull-center">
-    <p>User ID: <%- userData._id%></p>
-    <form action="<%=`/users/${userData._id}?_method=PUT`%>" class="needs-validation" method="post" novalidate>
+        <form action="/users/<%= userData._id %>?_method=PUT" class="needs-validation" method="POST" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input class="form-control" type="text" id="username" name="username" value="<%= userData.username %>" required>
+            </div>
 
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input class="form-control" type="text" id="username" name="username" value="<%- userData.username %>" required/>
-        </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input class="form-control" value="<%= userData.email %>" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" required>
+            </div>
 
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input class="form-control" value="<%- userData.email %>" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" required/>
-        </div>
+            <div class="mb-4">
+                <label for="bio" class="form-label">Bio:</label>
+                <textarea class="form-control" id="bio" name="bio" rows="3"><%= userData.bio %></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="bio">Bio: </label>
-            <input class="form-control" type="text" id="bio" name="bio" value="<%- userData.bio %>"/>
-        </div>
-        <br>
-        <div class="form-group">
-            <input class="btn btn-primary" type="submit" value="Update" />
-        </div>
-    </form>
-    <a href="/users">Go Back</a>
+            <button class="btn btn-primary w-100 mb-2" type="submit">Update Details</button>
+            <a href="/users/<%= userData._id %>" class="btn btn-outline-secondary w-100">Cancel</a>
+        </form>
+    </div>
 </div>

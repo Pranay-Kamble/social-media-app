@@ -1,9 +1,36 @@
-<%- layout("/layout.ejs") %>
+<% layout('layout') %>
 
-<h3>Name of my Project</h3>
+<div class="p-5 mb-4 bg-white border rounded-3 text-center shadow-sm">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold text-dark">Article Social Media Platform</h1>
+        <p class="col-md-8 mx-auto fs-5 text-muted">
+            A community space to share articles, engage in discussions, and connect with other creators.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+            <a href="/posts" class="btn btn-primary btn-lg px-4">Browse Posts</a>
+            <a href="/posts/create" class="btn btn-outline-dark btn-lg px-4">Create a Post</a>
+        </div>
+    </div>
+</div>
 
-<div class="container">
-    <a href="/users">All Users</a> <br>
-    <a href="/comments">All Comments</a> <br>
-    <a href="/posts">All Posts</a>
+<div class="row g-4 text-center">
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm p-4">
+            <div class="card-body">
+                <h3 class="card-title">All Users</h3>
+                <p class="card-text text-muted">Browse the community and find other creators to follow.</p>
+                <a href="/users" class="btn btn-link text-decoration-none">View All Users &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm p-4">
+            <div class="card-body">
+                <h3 class="card-title">All Posts</h3>
+                <p class="card-text text-muted">Dive into the latest articles and community discussions.</p>
+                <a href="/posts" class="btn btn-link text-decoration-none">View All Posts &rarr;</a>
+            </div>
+        </div>
+    </div>
 </div>

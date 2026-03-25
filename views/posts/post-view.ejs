@@ -1,82 +1,82 @@
-<!--For each individual post view-->
-<%- layout('/layout.ejs') %>
-<!--there can be a problem in the above line -> then try changing to /posts/layout-->
+<%- layout('layout.ejs') %>
 
-<a href="/posts">Go Back</a>
-<section class="m-3">
+<div class="mb-3">
+    <a href="/posts" class="btn btn-sm btn-secondary">&larr; Go Back</a>
+</div>
 
-    <%- include('../partials/success-flash.ejs', { success }) %>
-    <%- include('../partials/error-flash.ejs', { error }) %>
+<%- include('../partials/success-flash.ejs', { success }) %>
+<%- include('../partials/error-flash.ejs', { error }) %>
 
-    <div class="container mb-5 border rounded bg-light p-3">
-        <h3><%= post.title %></h3>
+<div class="card mb-5 shadow-sm">
+    <div class="card-body">
+        <h3 class="card-title mb-3"><%= post.title %></h3>
 
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <% post.mediaIncluded.forEach((img, idx) => { %>
-                    <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
-                        <img class="d-block w-100" src="<%= img.url %>" alt="<%= idx %> slide">
-                    </div>
-                <% }) %>
-
+        <% if (post.mediaIncluded.length > 0) { %>
+            <div id="postCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-inner bg-dark rounded">
+                    <% post.mediaIncluded.forEach((img, idx) => { %>
+                        <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
+                            <img class="d-block w-100 mx-auto" src="<%= img.url %>" alt="Slide <%= idx %>" style="max-height: 500px; object-fit: contain;">
+                        </div>
+                    <% }) %>
+                </div>
+                <% if (post.mediaIncluded.length > 1) { %>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#postCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#postCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                <% } %>
             </div>
-        <% if (post.mediaIncluded.length > 1) {%>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-                <span class="sr-only">Next</span>
-            </a>
         <% } %>
-        </div>
 
-        <br>
-        <br>
-
-        <p><%=post.content%></p>
+        <p class="card-text" style="white-space: pre-wrap;"><%= post.content %></p>
 
         <% if (currentUser && post.creatorId.equals(currentUser._id)) { %>
-            <button class="btn btn-sm btn-info"><a href="<%=`/posts/${post._id}/edit`%>">Edit</a></button>
-            <form class="d-inline-block" action="<%=`/posts/${post._id}/delete?_method=DELETE`%>" method="POST">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form>
-
+            <div class="mt-4">
+                <a href="/posts/<%= post._id %>/edit" class="btn btn-sm btn-info text-white">Edit</a>
+                <form class="d-inline-block" action="/posts/<%= post._id %>/delete?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </div>
         <% } %>
     </div>
-<!--    Then load the comments-->
+</div>
 
-    <div class="container mt-2">
-        <div class="row g-2">
-
-            <div class="col-sm border rounded bg-light p-3">
-                <h4>Comments</h4>
-                <div class="comment-view">
-                    <% for (const comment of postComments) {%>
-                        <%- include('../partials/comments/comment-card.ejs', { comment }) %>
-                    <% } %>
-                </div>
-            </div>
-
-            <div class="col-sm border rounded bg-light p-3">
-                <h4>Leave a comment</h4>
-                <% if (currentUser) {%>
-                    <form action="/comments/posts/<%=post._id%>" method="POST" class="needs-validation" novalidate>
-                        <textarea class="form-control" required name="content" id="comment" cols="30" rows="5" placeholder="Add a comment"></textarea>
-                        <br>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-info">Add Comment</button>
-                    </form>
-                <%}else{%>
-                    <h6>Login to add a comment</h6>
-
-                    <a href="/users/login"><button>Login</button></a>
-                <%}%>
-            </div>
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="p-4 border rounded bg-white shadow-sm">
+            <h4 class="mb-3">Comments</h4>
+            <% if (postComments.length === 0) { %>
+                <p class="text-muted">No comments yet. Be the first to reply!</p>
+            <% } else { %>
+                <% for (const comment of postComments) { %>
+                    <%- include('../partials/comments/comment-card.ejs', { comment }) %>
+                <% } %>
+            <% } %>
         </div>
-
     </div>
-</section>
+
+    <div class="col-md-5">
+        <div class="p-4 border rounded bg-white shadow-sm position-sticky" style="top: 80px;">
+            <h4 class="mb-3">Leave a Comment</h4>
+            <% if (currentUser) { %>
+                <form action="/comments/posts/<%= post._id %>" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <textarea class="form-control" required name="content" id="comment" rows="4" placeholder="Write your thoughts here..."></textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Add Comment</button>
+                </form>
+            <% } else { %>
+                <div class="text-center mt-4">
+                    <h6 class="text-muted mb-3">Login to join the conversation</h6>
+                    <a href="/users/login" class="btn btn-outline-primary">Login Now</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

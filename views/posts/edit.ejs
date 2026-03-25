@@ -1,49 +1,44 @@
-<% layout('/posts/layout.ejs') %>
+<%- layout('layout.ejs') %>
 
-<div>
-    <h3>Edit Post</h3>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 bg-white p-4 border rounded shadow-sm">
+        <h3 class="mb-4">Edit Post</h3>
 
-    <%- include('../partials/success-flash.ejs', { success }) %>
-    <%- include('../partials/error-flash.ejs', { error }) %>
+        <%- include('../partials/success-flash.ejs', { success }) %>
+        <%- include('../partials/error-flash.ejs', { error }) %>
 
-    <form class="mb-4 needs-validation" action="<%=`/posts/${post._id}/edit?_method=PUT`%>" enctype="multipart/form-data" method="POST" novalidate>
-        <div class="form-group">
-            <input type="text" class="form-control" id="title" name="title" value="<%=post.title%>" required>
-        </div>
-        <br>
-        <div class="form-group">
-            <textarea class="form-control"
-                      id="content"
-                      name="content"
-                      rows="3"
-                      placeholder="Body (Optional)"><%= post.content%></textarea>
-        </div>
-
-        <br>
-        <div class="form-group">
+        <form class="needs-validation" action="/posts/<%= post._id %>/edit?_method=PUT" enctype="multipart/form-data" method="POST" novalidate>
             <div class="mb-3">
-                <label for="formFileMultiple custom-file-label" class="form-label">Add more images:</label>
-                <input class="form-control custom-file-input" type="file" id="formFileMultiple" name="image" multiple>
+                <label for="title" class="form-label">Title*</label>
+                <input type="text" class="form-control" id="title" name="title" value="<%= post.title %>" required>
             </div>
-        </div>
-
-        <div class="form-check mb-3">
-            <% post.mediaIncluded.forEach(function(img, idx) { %>
-            <% console.log(img , idx) %>
-            <div>
-                <label class="form-check-label" for="image-<%=idx%>">
-                    Delete?
-                    <img src="<%= img.thumbnail %>" alt="image-<% idx %>" class="img-thumbnail">
-                </label>
-                <input class="form-check-input" type="checkbox" name="deleteImages[]"
-                       value="<%= img.filename %>" id="image-<%=idx%>">
+            
+            <div class="mb-3">
+                <label for="content" class="form-label">Body (optional)</label>
+                <textarea class="form-control" id="content" name="content" rows="4"><%= post.content %></textarea>
             </div>
-            <%})%>
-        </div>
 
-        <br>
-        <button type="submit">Edit</button>
-        <a href="<%=`/posts/${post._id}`%>"><button type="button">Cancel</button></a>
-    </form>
+            <div class="mb-4">
+                <label for="formFileMultiple" class="form-label">Add more images:</label>
+                <input class="form-control" type="file" id="formFileMultiple" name="image" multiple>
+            </div>
 
+            <div class="mb-4">
+                <h6>Select images to delete:</h6>
+                <div class="d-flex flex-wrap gap-3">
+                    <% post.mediaIncluded.forEach(function(img, idx) { %>
+                        <div class="form-check text-center border p-2 rounded">
+                            <input class="form-check-input ms-0 mt-2 position-static" type="checkbox" name="deleteImages[]" value="<%= img.filename %>" id="image-<%= idx %>">
+                            <label class="form-check-label d-block mt-1" for="image-<%= idx %>">
+                                <img src="<%= img.thumbnail %>" alt="image-<%= idx %>" class="img-thumbnail" style="max-height: 100px;">
+                            </label>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mb-2">Save Changes</button>
+            <a href="/posts/<%= post._id %>" class="btn btn-outline-secondary w-100">Cancel</a>
+        </form>
+    </div>
 </div>

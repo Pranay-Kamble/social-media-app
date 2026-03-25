@@ -1,25 +1,38 @@
-<% layout('posts/layout') %>
+<%- layout('layout.ejs') %>
 
-<div>
-    <h3>Create Post</h3>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 bg-white p-4 border rounded shadow-sm">
+        <h3 class="mb-4">Create Post</h3>
 
-    <form class="needs-validation" action="/posts/create" method="POST" enctype="multipart/form-data" novalidate>
-        <div class="form-group">
-            <input type="text" class="form-control" id="title" name="title" placeholder="Title*" required>
+        <%- include('../partials/success-flash.ejs', { success }) %>
+        <%- include('../partials/error-flash.ejs', { error }) %>
+        
         </div>
-        <br>
-        <div class="form-group">
-            <textarea class="form-control" id="content" name="content" rows="3" placeholder="Body text (optional)"></textarea>
-        </div>
-        <br>
+</div>
 
-        <div class="mb-3">
-            <label for="formFileMultiple" class="form-label custom-file-label">Add more images:</label>
-            <input class="form-control custom-file-input" type="file" name="image" id="formFileMultiple" multiple>
-        </div>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 bg-white p-4 border rounded shadow-sm">
+        <h3 class="mb-4">Create Post</h3>
 
-        <br>
-        <button type="submit">Create</button>
-        <button><a href="/posts">Cancel</a></button>
-    </form>
+        <form class="needs-validation" action="/posts/create" method="POST" enctype="multipart/form-data" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title*</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter post title" required>
+                <div class="invalid-feedback">Please provide a title.</div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="content" class="form-label">Body (optional)</label>
+                <textarea class="form-control" id="content" name="content" rows="4" placeholder="Write your post here..."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="formFileMultiple" class="form-label">Upload Images:</label>
+                <input class="form-control" type="file" name="image" id="formFileMultiple" multiple>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-2">Create Post</button>
+            <a href="/posts" class="btn btn-outline-secondary w-100">Cancel</a>
+        </form>
+    </div>
 </div>

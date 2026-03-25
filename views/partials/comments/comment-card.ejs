@@ -1,25 +1,19 @@
-<!-- will be used as a partial component in each post view i think-->
-
-<section class="comment-card-section">
-    <div class="card">
-        <div class="card-body m-0 p-2" >
-            <p >
-                <%= comment.content %>
-            </p>
-            <figcaption class="blockquote-footer">
-                <%= comment.creatorId.username %>
-            </figcaption>
-            <p>+: <%=comment.upvotes %>  -:<%= comment.downvotes %> </p>
-
-            <% if (currentUser && currentUser._id.equals(comment.creatorId._id)) { %>
-                <form class="d-inline-block" action="<%=`/comments/${comment._id}/delete?_method=DELETE`%>" method="POST">
-                    <button type='submit' class="btn btn-sm btn-danger">Delete</button>
-                </form>
-                <button class="btn btn-sm btn-info">Edit</button>
-                <p>Edit to be implemented</p>
-            <% } %>
-
+<div class="card mb-3 shadow-sm border-0 bg-light">
+    <div class="card-body">
+        <p class="card-text mb-1"><%= comment.content %></p>
+        <div class="text-muted small mb-2">
+            <strong><%= comment.creatorId.username %></strong> 
+            <span class="ms-2 badge bg-success text-white">+ <%= comment.upvotes %></span>
+            <span class="badge bg-danger text-white">- <%= comment.downvotes %></span>
         </div>
-    </div>
 
-</section>
+        <% if (currentUser && currentUser._id.equals(comment.creatorId._id)) { %>
+            <div class="mt-2">
+                <button class="btn btn-sm btn-outline-info me-1">Edit</button>
+                <form class="d-inline-block" action="/comments/<%= comment._id %>/delete?_method=DELETE" method="POST">
+                    <button type='submit' class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+</div>

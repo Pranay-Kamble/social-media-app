@@ -1,11 +1,12 @@
-<% layout('layout.ejs') %>
+<%- layout('layout.ejs') %>
 
-<%- include('./partials/success-flash.ejs', { success }) %>
-<%- include('./partials/error-flash.ejs', { error }) %>
+<%- include('partials/success-flash.ejs', { success }) %>
+<%- include('partials/error-flash.ejs', { error }) %>
 
-<div class="container mt-5 alert alert-danger w-50" role="alert">
-    <h4 class="flex alert-heading">
-        <%= err.status + ' - ' + err.message %>
+<div class="alert alert-danger mt-5 shadow-sm" role="alert">
+    <h4 class="alert-heading">
+        <%= err.status %> - <%= err.message %>
     </h4>
-    <%= err.stack %>
+    <hr>
+    <p class="mb-0 text-muted" style="white-space: pre-wrap;"><%= err.stack %></p>
 </div>

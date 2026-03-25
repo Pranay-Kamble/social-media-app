@@ -1,5 +1,11 @@
-<%- layout('/users/layout')%>
+<%- layout('layout.ejs') %>
 
-<form action="/users/logout" method="POST">
-    <button type="submit"> Click to logout</button>
-</form>
+<div class="text-center mt-5">
+    <div class="card d-inline-block p-5 shadow-sm">
+        <h4 class="mb-4">Are you sure you want to logout?</h4>
+        <form action="/users/logout" method="POST">
+            <button type="submit" class="btn btn-danger px-5">Logout</button>
+            <a href="/" class="btn btn-outline-secondary px-5 ms-2">Cancel</a>
+        </form>
+    </div>
+</div>

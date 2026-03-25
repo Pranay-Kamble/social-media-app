@@ -1,47 +1,50 @@
-<!-- views/signup.ejs -->
-<% layout('users/layout')%>
+<%- layout('layout.ejs') %>
 
-    <div class="container-fluid jumbotron col-sm-4 pull-center">
-        <h3>Sign Up</h3>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-5 bg-white p-4 border rounded shadow-sm">
+        <h3 class="text-center mb-4">Sign Up</h3>
 
         <%- include('../partials/success-flash.ejs', { success }) %>
         <%- include('../partials/error-flash.ejs', { error }) %>
 
-        <form autocomplete="off" action="/users/signup" class="needs-validation" method="POST" novalidate>
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input class="form-control" type="text" id="username" name="username" value="<%= (user && user.username) || ''%>" required/>
-        </div>
+        <form action="/users/signup" class="needs-validation" method="POST" novalidate>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input class="form-control" type="text" id="username" name="username" value="<%= (user && user.username) || '' %>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="display_name" class="form-label">Display Name:</label>
+                    <input class="form-control" type="text" id="display_name" name="display_name" minlength="3" maxlength="23" value="<%= (user && user.display_name) || '' %>" required>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label for="display_name">Display Name:</label>
-            <input class="form-control" type="text" id="display_name" name="display_name" minlength="3" maxlength="23" value="<%= (user && user.display_name) || ''%>" required/>
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" value="<%= (user && user.email) || ''%>" required/>
-        </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" type="email" id="email" name="email" value="<%= (user && user.email) || '' %>" required>
+            </div>
 
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input class="form-control" type="password" id="password" name="password" minlength="8" maxlength="20" required/>
-        </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input class="form-control" type="password" id="password" name="password" minlength="8" maxlength="20" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="confirmpassword" class="form-label">Confirm Password:</label>
+                    <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" minlength="8" maxlength="20" required>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label for="confirmpassword">Confirm Password:</label>
-            <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" minlength="8" maxlength="20" required/>
-        </div>
+            <div class="mb-4">
+                <label for="bio" class="form-label">Bio (Optional):</label>
+                <textarea class="form-control" id="bio" name="bio" rows="2"><%= (user && user.bio) || '' %></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="bio">Bio: </label>
-            <input class="form-control" type="text" id="bio" name="bio" value="<%= (user && user.bio) || ''%>" />
-        </div>
-            <br>
-        <div class="form-group">
-            <input class="btn btn-primary" type="submit" value="Sign Up" />
-        </div>
+            <button class="btn btn-primary w-100" type="submit">Create Account</button>
         </form>
+        
+        <div class="text-center mt-3">
+            <p class="small">Already have an account? <a href="/users/login" class="text-decoration-none">Log In</a></p>
+        </div>
     </div>
-        <a href="/users/login">Already have an account? Log In</a>
-
+</div>

@@ -1,7 +1,12 @@
+<%- layout('layout.ejs') %>
 
-<section class="comment-area">
-    <%- for (comment of comments) { %>
-<!--    render comment using commentCard partial or component from partials folder-->
-
-    <%}%>
+<section class="container mt-4">
+    <h3 class="mb-4">Recent Comments</h3>
+    <div class="row">
+        <% for (let comment of comments) { %>
+            <div class="col-md-6">
+                <%- include('../partials/comment-card.ejs', { comment }) %>
+            </div>
+        <% } %>
+    </div>
 </section>

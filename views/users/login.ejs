@@ -1,36 +1,30 @@
-<% layout('users/layout')%>
+<%- layout('layout.ejs') %>
 
-<h3>Login</h3>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4 bg-white p-4 border rounded shadow-sm">
+        <h3 class="text-center mb-4">Login</h3>
 
-<%- include('../partials/success-flash', {success}) %>
-<%- include('../partials/error-flash', {error}) %>
+        <%- include('../partials/success-flash.ejs', { success }) %>
+        <%- include('../partials/error-flash.ejs', { error }) %>
 
-<div class="container ">
-    <form autocomplete="off" action="/users/login" class="needs-validation" method="POST" novalidate>
-        <div class="form-group">
-            <label for="username">Username: </label>
-            <input class="form-control" type="text" name="username" id="username" value="<%= (user && user.username) || '' %>" placeholder="Username" required>
-        </div>
-        <div class="invalid-feedback">
-            Enter username between 3 and 20 characters
-        </div>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
+        <form action="/users/login" class="needs-validation" method="POST" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input class="form-control" type="text" name="username" id="username" value="<%= (user && user.username) || '' %>" placeholder="Username" required>
+                <div class="invalid-feedback">Enter username between 3 and 20 characters.</div>
+            </div>
 
-        <div class="form-group">
-            <label for="password">Password: </label>
-            <input class="form-control" type="password" name="password" id="password" value="" placeholder="Password" required/>
-        </div>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-        <div class="invalid-feedback">
-            Enter valid password
-        </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password:</label>
+                <input class="form-control" type="password" name="password" id="password" placeholder="Password" required>
+                <div class="invalid-feedback">Please enter your password.</div>
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        
+        <div class="text-center mt-3">
+            <p class="small">Don't have an account? <a href="/users/signup" class="text-decoration-none">Create one</a></p>
+        </div>
+    </div>
 </div>
-<br>
-<a href="/users/signup">Don't have an account? Create one</a>
