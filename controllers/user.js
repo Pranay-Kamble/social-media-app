@@ -2,7 +2,7 @@ import User from '../models/user.js';
 import AppError from "../utils/AppError.js";
 
 
-const home =async (req, res) => {
+const home = async (req, res) => {
     const userData = await User.find({});
     res.render('users/user-home.ejs', {userData})
 }
@@ -22,8 +22,7 @@ const renderLogout = (req, res) => {
 const renderUser = async (req, res) => {
     const {id} = req.params;
     const userData = await User.findOne({_id: id});
-    console.log(id);
-    console.log(userData);
+
     if (userData === null)
         throw new AppError('User does not exist', 404);
     else
@@ -58,7 +57,11 @@ const login = async (req, res) => {
         req.flash('success', 'Login Successful');
         const redirectLink = res.locals.returnTo || '/posts';
         console.log("Redirect Link: ", redirectLink);
-        res.redirect(redirectLink || '/posts');
+
+        req.session.save((err) => {
+            if (err) console.log("Session save error:", err);
+            res.redirect(redirectLink || '/posts');
+        });
     }else {
         req.flash('error', 'Invalid username or password');
         res.render('users/login.ejs', {user: formData});

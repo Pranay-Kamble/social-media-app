@@ -6,7 +6,6 @@ import { cloudinary } from '../cloudinary/index.js'
 
 const home = async (req, res) => {
     const postData = await Post.find().populate('creatorId', 'username _id');
-    console.log(postData);
     res.render('posts/posts', {postData})
 }
 
@@ -24,7 +23,6 @@ const renderPost = async (req, res) => {
         return;
     }
     const postComments = await Comment.find({postId}).populate('creatorId', 'username _id');
-    console.log(postComments);
     res.render('posts/post-view', { post, postComments })
 }
 

@@ -1,6 +1,5 @@
 
 const requireLogin = (req, res, next) => {
-    console.log("REQ User: ", req.user);
     if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl;
         req.flash('error', 'Please log in first!');

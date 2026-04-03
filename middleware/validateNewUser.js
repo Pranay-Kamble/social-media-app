@@ -1,35 +1,46 @@
-import joi from "joi";
-import User from "../models/user.js";
+import joi from 'joi';
+import User from '../models/user.js';
 
 const validateNewUser = async (req, res, next) => {
     const userSchema = joi.object({
-        email: joi.string().email().required(),
-        display_name: joi.string().required(),
-        username: joi.string().required().min(3).max(20),
-        bio: joi.string().optional().allow(''),
+        email: joi.string().email().required().label('Email'),
+        display_name: joi.string().required().label('Display Name'),
+        username: joi.string().required().min(3).max(20).label('Username'),
+        bio: joi.string().optional().allow('').label('Bio'),
         registeredOn: joi.date().iso(),
-        password: joi.string().min(8).max(20),
-        confirmpassword: joi.string().min(8).max(20)
-    })
+        password: joi.string().min(8).max(20).required().label('Password'),
+        confirmpassword: joi.string().min(8).max(20).required().label('Confirm Password')
+    });
+
     const formData = req.body;
-    console.log(formData);
-    const { error } = userSchema.validate(formData)
+    const { error } = userSchema.validate(formData, { abortEarly: false });
+    
+    let errors = {};
 
     if (error) {
-        req.flash('error', error);
-        return res.redirect('users/signup', {user: formData});
+        error.details.forEach(err => {
+            errors[err.path[0]] = err.message.replace(/['"]/g, ''); 
+        });
     }
 
-    const userSearch = await User.findOne({ email: formData.email });
+    const [emailSearch, usernameSearch] = await Promise.all([
+        User.findOne({ email: formData.email }),
+        User.findOne({ username: formData.username })
+    ]);
 
-    if (userSearch != null && (userSearch.email === formData.email)) {
-        req.flash('error', 'Email already exists!');
-        return res.render('users/signup.ejs', {user: formData});
+    if (emailSearch) {
+        errors.email = 'Email is already registered!';
+    }
+
+    if (usernameSearch) {
+        errors.username = 'Username is already taken!';
     }
 
     if (formData.password !== formData.confirmpassword) {
-        req.flash('error', 'Passwords do not match!');
-        return res.render('users/signup.ejs', {user: formData});
+        errors.confirmpassword = 'Passwords do not match!';
+    }
+    if (Object.keys(errors).length > 0) {
+        return res.render('users/signup.ejs', { user: formData, errors });
     }
     next();
 }
